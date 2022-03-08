@@ -1,7 +1,13 @@
 # MFSB
-Mutha F'ing Space Blaster - A Raspberry Pi Zero 2 W based, 3D printed, ammo counting, Tensorflow-based targeting computer that can curve Nerf Rival rounds while tracking targets... blaster attachment.
+Mutha F'ing Smart Blaster - A Raspberry Pi Zero 2 W based, 3D printed, ammo counting, Tensorflow-based targeting computer that can curve Nerf Rival rounds while tracking targets... blaster attachment.
 
 ## Helper Commands
+Run these after SSH into the MFSB to reboot Chromium and other service needed to run the devices.
+
+## Debugging
+1. Start MFSB Pi with standard USB Micro, or from switch on side of PiSugar2 installed in hull
+2. Wait for boot into interface for ammo counter
+3. Use a browser to go to IP address of your device in your LAN, with port 8080 for Chromium interface
 
 ## Hardware
   * Raspberry Pi Zero 2 W (2021 Model)
