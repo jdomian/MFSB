@@ -6,8 +6,9 @@ Run these after SSH into the MFSB to reboot Chromium and other service needed to
 
 ## Debugging
 1. Start MFSB Pi with standard USB Micro, or from switch on side of PiSugar2 installed in hull
-2. Wait for boot into interface for ammo counter
-3. Use a browser to go to IP address of your device in your LAN, with port 8080 for Chromium interface
+2. SSH into MFSB with username pi@<IP.AD.DR.ESS>:8080
+3. Wait for boot into interface for ammo counter
+4. Use a browser to go to IP address of your device in your LAN, with port 8080 for Chromium interface
 
 ## Hardware
   * Raspberry Pi Zero 2 W (2021 Model)
