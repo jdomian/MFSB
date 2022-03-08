@@ -1,6 +1,8 @@
 # MFSB
 Mutha F'ing Space Blaster - A Raspberry Pi Zero 2 W based, 3D printed, ammo counting, Tensorflow-based targeting computer that can curve Nerf Rival rounds while tracking targets... blaster attachment.
 
+## Helper Commands
+
 ## Hardware
   * Raspberry Pi Zero 2 W (2021 Model)
   * Adafruit MSA311 Triple Axis Accelerometer [adafruit.com]: https://www.adafruit.com/product/5309
@@ -18,5 +20,10 @@ Mutha F'ing Space Blaster - A Raspberry Pi Zero 2 W based, 3D printed, ammo coun
   * Chromium Browser flagged with --kiosk
   * Tensorflow Lite for target tracking
 
-## Startup
+## Startup "Linked" Files
 Created some "linked" files in the root of the repo. These change the startup behavior of what loads on boot, such as the Chromium auto boot in kiosk mode, the display driver and nodejs server.
+  * `boot-config` --> linked to the root pi `/book/config.txt` with setting for HDMI display overrides, overclocking and Waveshare LED Display resolution settings and orientation.
+  * `kiosk-autostart` --> linked to `/etc/xdg/openbox/autostart` which contains the Chromium browser settings to auto start Chromium in fullscreen, kiosk mode and with autoplay for mp4s enabled.
+  * `pi-startup` --> linked to `/etc/rc.local` which contains scripts needed to start the drivers built from fbcp-ili9341, start the nodejs server, start socket.io for GPIOs, start the webserver to serve pages and to startup the camera module, all of this on initial boot.
+
+
