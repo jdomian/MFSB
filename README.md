@@ -3,6 +3,28 @@ Mutha F'ing Smart Blaster - A Raspberry Pi Zero 2 W based, 3D printed, ammo coun
 
 ## Helper Commands
 Run these after SSH into the MFSB to reboot Chromium and other service needed to run the devices.
+```markdown
+#Shutdown Raspberry Pi, right now!
+sudo shutdown -h now
+
+# List all processes running, like NodeJS server, then find the process number.
+ps aux | grep node
+# Kill the process you just found by its ID
+kill -9 491
+
+# See how long all startup processes take on OS load. Disable some later to speed up boot times
+systemd-analyze blame
+
+# Run NodeJS webserver to MFSB located at /home/pi/MFSB.webserver.js
+sudo node /home/pi/MFSG/webserver.js
+
+# Start the Camera module for MFSB
+sudo node node_modules/raspberrypi-node-camera-web-streamer/index.js
+
+# Refresh the browser for MFSB, this simulates pressing "F5" to refresh the browser
+DISPLAY=:0 xdotool key F5
+
+```
 
 ## Debugging
 1. Start MFSB Pi with standard USB Micro, or from switch on side of PiSugar2 installed in hull
