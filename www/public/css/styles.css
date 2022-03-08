@@ -15,6 +15,18 @@
   src: url(PressStart2P-Regular.ttf);
 }
 
+html, body, .carousel, .carousel-item {
+  width: 100vw;
+  height: 100vh;
+  max-width: 320px; /*hack*/
+}
+
+@media screen and (min-width: 320px) {
+  .debug {
+    display: none;
+  }
+}
+
 #targetScreen .ammoCount {
   position: absolute;
   top: 2%;
@@ -30,19 +42,13 @@
     position:absolute;
     top:0;
     left:0;
-    width: 100vw;
-    height: 100vh;
-    /*May have to remove */
+
   }
   #reload-debug {
     position: absolute;
     bottom: 0;
     right:0;
     z-index: 1000;
-  }
-  .carousel-item {
-    width: 100vw;
-    height: 100vh;
   }
 
   .carousel-item.active {

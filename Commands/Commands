@@ -17,3 +17,6 @@ sudo node node_modules/raspberrypi-node-camera-web-streamer/index.js
 
 # Refresh the browser for MFSG, this simulates pressing "F5" to refresh the browser
 DISPLAY=:0 xdotool key F5
+
+# Remote debugging in Chrome desktop for Chromium on the Pi. Need to add flag--remote-debugging-port=9222 to xstart, then add 10.0.0.222:9223 to "Target discovery devices" in chrome on desktop here: chrome://inspect/#devices
+ssh -L 0.0.0.0:9223:localhost:9222 localhost -N
