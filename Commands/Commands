@@ -1,0 +1,19 @@
+# Shutdown Raspberry Pi, right now!
+ sudo shutdown -h now
+
+# List all processes running, like NodeJS server, then find the process number.
+ps aux | grep node
+# Kill the process you just found by its ID
+ kill -9 491
+
+# See how long all startup processes take on OS load. Disable some later to speed up boot times
+systemd-analyze blame
+
+# Run NodeJS webserver to MFSG located at /home/pi/MFSG.webserver.just
+sudo node /home/pi/MFSG/webserver.js
+
+# Start the Camera module for MFSG
+sudo node node_modules/raspberrypi-node-camera-web-streamer/index.js
+
+# Refresh the browser for MFSG, this simulates pressing "F5" to refresh the browser
+DISPLAY=:0 xdotool key F5
