@@ -7,7 +7,7 @@
 2. Copy configs (To Add) for dietpi.txt and dietpi-wifi.txt to root of SD, once flashed.
   - This will have wifi setting, local settings etc.
 3. Run DietPi on device for initial setup.
-4. After inital setup, use ```dietpi-software ``` to load the insterface to install dependencies. Use the "Search Software" and install the following dependencies.
+4. After inital setup, use ```dietpi-software``` to load the insterface to install dependencies. Use the "Search Software" and install the following dependencies.
   - Chromium: web browser for desktop or autostart
   - Python 3: Runtime system, pip package installer and development headers
   - Node.js: JavaScript runtime environment
