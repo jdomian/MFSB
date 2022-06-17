@@ -4,15 +4,19 @@
 
 ### DietPi Setup
 1. Flash DietPi image from dietpi.com using balenaEtcher. Use RPi ArmV7 32-Bit for RPi Zero 2 W. NOT 64 BIT!
-2. Copy configs (To Add) for dietpi.txt and dietpi-wifi.txt to root of SD, once flashed.
+2. Once image is flashed to the microSD card, eject it from your PC< and re-insert it so you can browse to the files on the SD card. 
+3. Open the SD cards files and copy configs (To Add) for dietpi.txt and dietpi-wifi.txt to root of SD, once flashed.
   - This will have wifi setting, local settings etc.
-3. Run DietPi on device for initial setup.
-4. Aftger inistial setup, run ```dietpi-config```. Change the follwoing
+4. Eject the microSD card from your PC and get ready to insert into Raspberry Pi
+5. Plug Raspberry Pi into an external monitor, keyboard and if possible mouse(optional). Insert the microSD card into the Rasperbby Pi and power on the Raspberry Pi. This will run the initial setup for DietPi. Be patient... Grab a drink, and come back.
+6. At this point the OS is loaded and configured. It may ask you for a username/password. THe default for this OS distro is ```root```/```dietpi```.
+7. After initial setup, run ```dietpi-config``` in the . Change the follwoing
   - Hostname
   - Password for root and dietpi
   - SSH to OpenSSH (For VS Code file browsing)
-6. After inital setup, use ```dietpi-software``` to load the insterface to install dependencies. Use the "Search Software" and install the following dependencies.
+8. After inital setup, use ```dietpi-software``` to load the insterface to install dependencies. Use the "Search Software" and install the following dependencies.
   - Chromium: web browser for desktop or autostart
+      -- Set the initial page value http://localhost:8080 
   - Python 3: Runtime system, pip package installer and development headers
   - Node.js: JavaScript runtime environment
   - Build-Essential: GNU C/C++ compiler, development libraries and header
@@ -57,6 +61,9 @@
     </body>
     </html>
   ```
-
+10. Run the new webserver.js file by typing this into command line, then refresh your browser on the Raspberry Pi plugged into the external monitor.
+  ```bash
+  node webserver.js
+  ```
 
 
