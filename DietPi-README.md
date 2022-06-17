@@ -25,9 +25,12 @@
   node -v
   npm -v
   ```
-6. Install node-rpio from jperkins (https://github.com/jperkin/node-rpio).
+6. Install the following node dependencies:
+    -- node-rpio from jperkins (https://github.com/jperkin/node-rpio)
+    -- Socket.io
   ```bash
   sudo npm install rpio
+  sudo npm install socket.io
   ```
 8. Create a new node webserver. Create a file called ```webserver.js``` in the /root directory, then add the following javascript:
   ```js
