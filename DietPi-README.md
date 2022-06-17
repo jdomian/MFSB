@@ -25,4 +25,38 @@
   ```bash
   sudo npm install rpio
   ```
+8. Create a new node webserver. Create a file called ```webserver.js``` in the /root directory, then add the following javascript:
+  ```js
+    var http = require('http').createServer(handler); //require http server, and create server with function handler().
+    var fs = require('fs'); //require filesystem module.
+    var roorDir = '/'; //change this to your root directory path which you will place your files in, in the next step.
+
+    http.listen(8080); //listen to port 8080
+
+    function handler (req, res) { //create server
+      fs.readFile(__dirname + rootDir + '/index.html', function(err, data) { //read file index.html in rootDir folder.
+        if (err) {
+        res.writeHead(404, {'Content-Type': 'text/html'}); //display 404 on error
+          return res.end("404 Not Found");
+      }
+      res.writeHead(200, {'Content-Type': 'text/html'}); //write HTML
+      res.write(data); //write data from index.html
+        return res.end();
+      });
+    }
+  ```
+ 9. Create a new folder to store all your HTML/JS/CSS in which will act as your application root directory. In this folder, create a blank file called ```index.html```. Add the following HTML to test.
+  ```html
+    <!DOCTYPE html>
+    <html>
+    <body>
+
+    <h1>No Webserver.js Test</h1>
+      <p>You MF'in did it!</p>
+
+    </body>
+    </html>
+  ```
+
+
 
