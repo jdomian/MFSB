@@ -55,4 +55,29 @@ Created some "linked" files in the root of the repo. These change the startup be
   * `kiosk-autostart` --> linked to `/etc/xdg/openbox/autostart` which contains the Chromium browser settings to auto start Chromium in fullscreen, kiosk mode and with autoplay for mp4s enabled.
   * `pi-startup` --> linked to `/etc/rc.local` which contains scripts needed to start the drivers built from fbcp-ili9341, start the nodejs server, start socket.io for GPIOs, start the webserver to serve pages and to startup the camera module, all of this on initial boot.
 
+##rc.local Setup
+```bash
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
 
+# 1 - Start 1.3in LCD driver and clone output to micro display
+sudo /home/pi/fbcp-ili9341/build/fbcp-ili9341 &
+
+# 2 - Start NodeJS webserver for chromium. This also starts GPIO Pin Service for buttons
+su pi -c 'node /home/pi/MFSB/www/webserver.js < /dev/null &'
+
+# 3 - Start UI via Chromium Kisok Mode. This was moved to /home/pi/.bash_profile -- COMMAND: [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor &
+
+# 4 - Starts basic MJPEG Raspberry Pi Web Cam Streamer as <img src="http://<server_address>/stream.mjpg" />
+#su pi -c 'sudo node /home/pi/node_modules/raspberrypi-node-camera-web-streamer/index.js < /dev/null &'
+
+# IN DEVELOPMENT--- 5 - Starts HTML5 <video> h.264 encoded video stream to use with Tensorflow AI
+#su pi -c 'python3 /home/pi/fmp4streamer/fmp4streamer.py < /dev/null &'
+#su pi -c 'python3 MFSB/www/public/trackingCamera/server.py < /dev/null &'
+
+# remote debugging in chrome on desktop over at port 9223
+#su pi -c 'ssh -L 0.0.0.0:9223:localhost:9222 localhost -N < /dev/null &'
+```
