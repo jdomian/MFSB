@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+    <body>
+    <div id="screens-carousel" class="carousel" data-bs-interval="false" data-bs-wrap="true">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div id="targetScreen">
+              <div class="number ammoCount"></div>
+              <div class="crosshair type-1"></div>
+              <div id="piCamWrapper">
+                <label id="TFTargetLabel" class="locating">Searching...</label>
+                <img id="webcamPi" class="x1" src="http://10.0.0.222:3000/stream.mjpg" crossorigin="anonymous"/>
+                <div id="TFTarget"></div>
+              </div>
+              <div class="zoomLevel"></div>
+            </div>
+        </div>
+        <div class="carousel-item" id="TFCanvaseArea"></div>
+      </div>
+    <script src="js/jquery-3.6.0.min.js"></script> <!-- include socket.io client side script -->
+    <script src="libs/bootstrap/js/bootstrap.min.js"></script> <!-- include socket.io client side script -->
+    <script src="socket.io/socket.io.js"></script> <!-- include socket.io client side script -->
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    <script src="js/trackingCamera.js"></script> <!-- Main JS file to work with for interface -->
+</body>
+</html>
