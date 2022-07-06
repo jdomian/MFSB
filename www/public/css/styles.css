@@ -16,9 +16,9 @@
 }
 
 html, body, .carousel, .carousel-item {
-  width: 100vw;
-  height: 100vh;
-  max-width: 320px; /*hack*/
+  width: 320px;
+  height: 240px;
+  max-width: 320px !important; /*hack*/
 }
 
 @media screen and (min-width: 320px) {
@@ -36,6 +36,12 @@ html, body, .carousel, .carousel-item {
   z-index: 20;
   font-size: 2em;
   opacity: 1;
+}
+
+#targetScreen:before,
+#targetScreen:after {
+  content: " ";
+  
 }
 
 .carousel {
@@ -198,11 +204,11 @@ html, body, .carousel, .carousel-item {
 
 .type-1 {
   display: inline-block;
-  width: 50%;
-  height: 50%;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   border-style: solid;
-  border-width: 2px;
+  border-width: 5px;
   border-color: lightskyblue;
   background-color: rgba(0, 0, 0, 0);
   position: absolute;
@@ -415,6 +421,11 @@ html, body, .carousel, .carousel-item {
   position: absolute;
   transform: scale(1);
   transition: all 0.5s ease-in-out;
+  left: 0;
+  right: 0;
+  margin: 0px auto;
+  width: 320px;
+  height: 240px;
 }
 
 #webcamPi.x2 {
@@ -438,4 +449,259 @@ html, body, .carousel, .carousel-item {
   position: absolute;
   top:0;
   right:0;
+}
+
+#TFTarget {
+  position: absolute;
+  top:0;
+  left: 0;
+    width: 100%;
+    height: 100%;
+    
+    border: 3px solid limegreen;
+    transition: all 0.25s ease-in-out;
+}
+
+#TFTargetLabel {
+  font-family: ShareTech-Regular;
+    color: limegreen;
+    font-size: 12px;
+    position: absolute;
+    z-index: 10;
+    top: 0%;
+    right: 0%;
+    padding:2%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#TFTargetLabel.locating {
+  color: orange;
+}
+
+#next-screen {
+    position: absolute;
+    z-index: 1000;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0px auto;
+    text-align: center;
+}
+
+/*servo.html*/
+
+/* Arrow */
+
+.arrow {
+  position: absolute;
+  margin: 0 auto;
+  width: 100%;
+  left: 0;
+  right: 0;
+  background: none !important;
+  transition: all 0.5s ease;
+}
+
+.arrow .curve {
+
+  border: 6px solid yellow;
+  border-color: transparent transparent transparent yellow;
+  height: 100vh;
+  border-radius: 0 0 0 0;
+  position: absolute;
+  top: -10vh;
+  margin: 0px auto;
+  left: 50%;
+  right: 0;
+  width: 100vw;
+  border-radius: 50vw 0vw 0vw 25vw;
+}
+
+.arrow.right {
+  transform: rotateX(45deg) rotateY(0deg) rotateZ(0deg);
+}
+
+.arrow.left {
+  transform: rotateX(45deg) rotateY(-180deg) rotateZ(0deg);
+}
+
+.arrow .point {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+}
+
+.arrow .point:before,
+.arrow .point:after {
+  border: 1px solid yellow;
+  height: 25px;
+  content: "";
+  position: absolute;
+}
+
+.arrow .point:before {
+  top: -11px;
+  left: -11px;
+  transform: rotate(-74deg);
+  -webkit-transform: rotate(-74deg);
+  -moz-transform: rotate(-74deg);
+  -ms-transform: rotate(-74deg);
+}
+
+.arrow .point:after {
+  top: -20px;
+  left: 5px;
+  transform: rotate(12deg);
+  -webkit-transform: rotate(12deg);
+  -moz-transform: rotate(12deg);
+  -ms-transform: rotate(12deg);
+}
+
+.arrow {
+  height: 50vh;
+  width: 50vw;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0px auto;
+  /* background: white; */
+  transform: rotateX(45deg) rotateY(-90deg) rotateZ(0deg);
+}
+
+.arrow-wrap {
+  perspective: 25vh;
+  perspective-origin: 50% 50%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+}
+
+.chev-arrow {
+  position: absolute;
+  top: 50%;
+  width: 10vmin;
+  height: 10vmin;
+  background: transparent;
+  border-top: 3vmin solid white;
+  border-right: 3vmin solid white;
+  box-shadow: 0 0 0 lightgray;
+  transition: all 200ms ease;
+}
+
+.chev-arrow.left {
+  left: 3vw;
+  transform: translate3d(0, -50%, 0) rotate(-135deg);
+}
+
+.chev-arrow.right {
+  right: 3vw;
+  transform: translate3d(0, -50%, 0) rotate(45deg);
+}
+
+.chev-arrow:hover,
+.chev-arrow.active {
+  border-color: orange;
+  box-shadow: 1.5vmin -1.5vmin 0 white;
+}
+
+.chev-arrow:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -60%) rotate(45deg), translate(0%, -0%) rotate(45deg);
+  width: 200%;
+  height: 200%;
+}
+#servo-degrees {
+  position: absolute;
+  top: 70%;
+  left: 0;
+  right: 0;
+  margin: 0px auto;
+  width: 100%;
+  color: yellow;
+  text-align: center;
+}
+.servo.crosshair.type-1 {
+  border-color: yellow;
+  border-width: 3px;
+}
+
+.servo-circle,
+.servo-line {
+  animation: pulse 2s linear infinite;
+}
+
+.servo-angle-line {
+  border-color: yellow;
+  border-width: 1px;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-style: solid;
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(0, -50%);
+  margin: 0px auto;
+  clip-path: none;
+}
+
+.circle-line-container {
+  
+}
+
+.servo-circle {
+  display: inline-block;
+    width: 4rem;
+    height: 4rem;
+    border: 2px solid yellow;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    transform: translate(0, -50%);
+    left: 0;
+    right: 0;
+    margin: 0px auto;
+}
+
+.servo-line {
+    border-right: 5px dashed yellow;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    z-index: 101;
+    top: 33%;
+    left: 0;
+    right: 0;
+    transform: translate3d(0, -50%, 0) rotate3d(0);
+    width: 5px;
+    margin: 0px auto;
+    transform-origin: bottom center;
+    transition: all 0.3s ease;
+}
+
+.carousel-item {
+     -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+}
+
+@-webkit-keyframes pulse /* Safari and Chrome */ {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
 }

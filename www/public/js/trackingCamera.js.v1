@@ -1,5 +1,6 @@
 //settings
 var ammoCountSetting = localStorage.getItem('ammoCountSetting');
+var ammoCountCurrent = localStorage.getItem('ammoCountCurrent');
 
 var hold = 0;
 var triggerHold = 0;
@@ -22,6 +23,7 @@ var debugTiggerPin = 0;
 //Trigger to count down ammo
 function fire(count) {
   console.log(count); //Log when button is pushed
+  localStorage.setItem('ammoCountCurrent', count);
   ammoCount.text(count);
   let deg = 360 / maxRounds;
   let precentDeg = 180 - ((maxRounds - count) * deg);
@@ -51,23 +53,12 @@ function reload() {
 
 //Screen cycling
 function changeScreen() {
-  
-  console.log('Cycling screen');
-  clearTimeout(hold);
-  $('.carousel').carousel('next');
+  window.location.href = 'accelerometer.html';
 }
 
 //Select
 function select() {
-  switch (currentView) {
-    case 0:
-      console.log('Ammo select');
-      localStorage.setItem('ammoCountSetting', ammoCountSetting);
-      $('#ammoScreen .mode-screen').removeClass('configure');
-      reload();
-      window.location.reload();
-      break;
-    case 1:
+
       console.log('Aim select');
       let $cam = $('#webcamPi');
       let $zLvl = $('.zoomLevel');
@@ -91,51 +82,11 @@ function select() {
         $cam.removeClass('x10').addClass('x1');
         $zLvl.text('');
       }
-      
-      break;
-    case 2:
-    default:
-      console.log('slide');
-  }
 }
 
 //Select
 function mode() {
-  switch (currentView) {
-    case 0:
-
-      var $modeScreen = $('#ammoScreen .mode-screen');
-      var $modes = $('#ammoScreen .mode-screen .modes');
-
-
-      
-      $modes.children('li').each(function(i,e){
-          if(e.innerText == ammoCountSetting)
-          {
-              $(e).addClass("selected");
-          }
-      });
-      
-
-      if ($modeScreen.hasClass('configure')) {
-        var $selectedMode = $modes.children('li.selected').removeClass("selected");
-        var $divs = $selectedMode.parent().children();
-        $divs.eq((($divs.index($selectedMode) + 1) % $divs.length)).addClass("selected");
-        ammoCountSetting = $modes.children('li.selected').text();
-      }
-
-      $modeScreen.addClass('configure');
-      
-
-    
-      break;
-    case 0:
-      console.log('Mangoes and papayas are $2.79 a pound.');
-      break;
-    case 2:
-    default:
-      console.log('slide');
-  }
+  make();
 } 
 
 
@@ -188,15 +139,6 @@ socket.on("cycleScreen", (arg) => {
   if (arg == 0) {
     changeScreen();
   }
-  //Save for later: change screen on holding of button for 3 sec
-  // if (arg == 0) {
-  //   hold = setTimeout("changeScreen()",3000);
-  // }
-  // else {
-  //   console.log(hold);
-  //   console.log('Changing Mode/Selection');
-  //   clearTimeout(hold);
-  // }
 });
 
 $(document).ready(function(){
@@ -215,10 +157,6 @@ $('#debugSelect').click(function(){
 });
 $('#debugMode').click(function(){
   mode();
-});
-
-$('.carousel').on('slid.bs.carousel', function (e) {
-  currentView = e.to;
 });
 
 
@@ -293,16 +231,16 @@ function make() {
 }
 
 // when the dom is loaded, call make();
-window.addEventListener('DOMContentLoaded', function () {
-  make();
+// window.addEventListener('DOMContentLoaded', function () {
+//   make();
 
-setInterval(function(){
-  //make();
-},10000);
+// setInterval(function(){
+//   //make();
+// },10000);
 
  
   
-});
+// });
 
 function startDetecting() {
   console.log('model ready')
