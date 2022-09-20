@@ -54,6 +54,30 @@ Created some "linked" files in the root of the repo. These change the startup be
   * `boot-config` --> linked to the root pi `/book/config.txt` with setting for HDMI display overrides, overclocking and Waveshare LED Display resolution settings and orientation.
   * `kiosk-autostart` --> linked to `/etc/xdg/openbox/autostart` which contains the Chromium browser settings to auto start Chromium in fullscreen, kiosk mode and with autoplay for mp4s enabled.
   * `pi-startup` --> linked to `/etc/rc.local` which contains scripts needed to start the drivers built from fbcp-ili9341, start the nodejs server, start socket.io for GPIOs, start the webserver to serve pages and to startup the camera module, all of this on initial boot.
+  
+  
+##kiosk-autostart Setup
+The following is what startx uses to load chromium with arguments to avoid CORS and allow local files access.
+```bash
+# Disable any form of screen saver / screen blanking / power management
+xset s off
+xset s noblank
+xset -dpms
+
+# Allow quitting the X server with CTRL-ATL-Backspace
+setxkbmap -option terminate:ctrl_alt_bksp
+
+# Start Chromium in kiosk mode
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/'Local State'
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/; s/"exit_type":"[^"]\+"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
+
+# Debugging not on boot with window and not kiosk
+#chromium-browser 'http://localhost:8080'
+
+# Fullscreen kiosk with no bars
+chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required 'http://localhost:8080'
+```
+
 
 ##rc.local Setup
 ```bash
