@@ -144,7 +144,7 @@ exit 0
 ## NodeJS Express Simple Server
 
 ### Installation
-```npm install pi-camera```
+```npm install ws pi-camera```
 
 ```javascript
 //node server.js
