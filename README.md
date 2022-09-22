@@ -1,5 +1,16 @@
-# MFSB
-Mutha F'ing Smart Blaster - A Raspberry Pi Zero 2 W based, 3D printed, ammo counting, Tensorflow-based targeting computer that can curve Nerf Rival rounds while tracking targets... blaster attachment.
+# MFSB - Hyperpixel2r
+MFSB with touchscreen Hyperpixel 2.0 Round display, auto night-vision and accerometer.
+
+## Hardware
+1. Raspberry Pi Zero 2 W (2021)
+2. Raspberry Pi Camera Board - Night Vision & Adjustable-Focus Lens (5MP)
+
+
+## Tech Stack
+1. Raspian OS (Buster)
+2. NodeJS
+3. NPM
+4. Chromium Browser (Headless, kiosk)
 
 ## Helper Commands
 Run these after SSH into the MFSB to reboot Chromium and other service needed to run the devices.
@@ -56,52 +67,95 @@ Created some "linked" files in the root of the repo. These change the startup be
   * `pi-startup` --> linked to `/etc/rc.local` which contains scripts needed to start the drivers built from fbcp-ili9341, start the nodejs server, start socket.io for GPIOs, start the webserver to serve pages and to startup the camera module, all of this on initial boot.
   
   
-##kiosk-autostart Setup
+## autostart Setup
 The following is what startx uses to load chromium with arguments to avoid CORS and allow local files access.
 ```bash
+#
+# These things are run when an Openbox X Session is started.
+# You may place a similar script in $HOME/.config/openbox/autostart
+# to run user-specific things.
+#
+
+# If you want to use GNOME config tools...
+#
+#if test -x /usr/lib/arm-linux-gnueabihf/gnome-settings-daemon >/dev/null; then
+#  /usr/lib/arm-linux-gnueabihf/gnome-settings-daemon &
+#elif which gnome-settings-daemon >/dev/null 2>&1; then
+#  gnome-settings-daemon &
+#fi
+
+# If you want to use XFCE config tools...
+#
+#xfce-mcs-manager &
+
+# ---MFSB---
+# Here and below are additions made for MFSB Hyperpixel2r. (Sept 2022)
+#
 # Disable any form of screen saver / screen blanking / power management
 xset s off
 xset s noblank
 xset -dpms
-
+ 
 # Allow quitting the X server with CTRL-ATL-Backspace
 setxkbmap -option terminate:ctrl_alt_bksp
-
+ 
 # Start Chromium in kiosk mode
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/'Local State'
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/; s/"exit_type":"[^"]\+"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
 
-# Debugging not on boot with window and not kiosk
-#chromium-browser 'http://localhost:8080'
+# Set the URL for the browser to automatically load as the default.
+#chromium-browser 'http://10.0.10.10:3000'
+ 
+# Runs with flags for performance nad disabling security within local environment.
+#chromium-browser --disable-infobars --disable-notifications --kiosk 'http://10.0.10.10:3000'
 
+# Experimental
 # Fullscreen kiosk with no bars
-chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required 'http://localhost:8080'
+chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required --window-size=480,480 'http://10.0.0.132:3000/'
 ```
 
 
 ##rc.local Setup
 ```bash
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
 # Print the IP address
 _IP=$(hostname -I) || true
 if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-# 1 - Start 1.3in LCD driver and clone output to micro display
-sudo /home/pi/fbcp-ili9341/build/fbcp-ili9341 &
+sudo node /home/pi/MFSB/server.js > /home/pi/MFSB/log.txt 2>&1 &
 
-# 2 - Start NodeJS webserver for chromium. This also starts GPIO Pin Service for buttons
-su pi -c 'node /home/pi/MFSB/www/webserver.js < /dev/null &'
+exit 0
+```
 
-# 3 - Start UI via Chromium Kisok Mode. This was moved to /home/pi/.bash_profile -- COMMAND: [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor &
+## NodeJS Express Simple Server
 
-# 4 - Starts basic MJPEG Raspberry Pi Web Cam Streamer as <img src="http://<server_address>/stream.mjpg" />
-#su pi -c 'sudo node /home/pi/node_modules/raspberrypi-node-camera-web-streamer/index.js < /dev/null &'
+### Installation
+```npm install pi-camera```
 
-# IN DEVELOPMENT--- 5 - Starts HTML5 <video> h.264 encoded video stream to use with Tensorflow AI
-#su pi -c 'python3 /home/pi/fmp4streamer/fmp4streamer.py < /dev/null &'
-#su pi -c 'python3 MFSB/www/public/trackingCamera/server.py < /dev/null &'
+```javascript
+//node server.js
 
-# remote debugging in chrome on desktop over at port 9223
-#su pi -c 'ssh -L 0.0.0.0:9223:localhost:9222 localhost -N < /dev/null &'
+const express = require('express')
+const app = express();
+const fs = require('fs')
+const port = 3000;
+
+//Do Stuff Here
+
+app.use(express.static(__dirname+'/public'));
+app.listen(port, () => console.log(`Example app listening on port ${port}! In your web browser, navigate to http://<IP_ADDRESS_OF_THIS_SERVER>:3000`));
 ```
