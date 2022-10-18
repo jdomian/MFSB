@@ -27,19 +27,22 @@ http.listen(8080); //listen to port 8080
 
 //Cycle Pin tied to screen cycling, located on right side of scope
 rpio.open(rpioCycleScreenPin, rpio.INPUT, rpio.PULL_UP);
-console.log('Cycle Pin' + rpioCycleScreenPin + ' is currently ready... STATE:' + (rpio.read(rpioCycleScreenPin) ? 'high' : 'low'));
+//console.log('Cycle Pin' + rpioCycleScreenPin + ' is currently ready... STATE:' + (rpio.read(rpioCycleScreenPin) ? 'high' : 'low'));
 
 //Select Pin tied to RIGHT blue "SELECT" button
 rpio.open(rpioSelectPin, rpio.INPUT, rpio.PULL_UP);
-console.log('Select Pin' + rpioSelectPin + ' is currently ready... STATE:' + (rpio.read(rpioSelectPin) ? 'high' : 'low'));
+//console.log('Select Pin' + rpioSelectPin + ' is currently ready... STATE:' + (rpio.read(rpioSelectPin) ? 'high' : 'low'));
 
 //Mode Pin tied to LEFT blue "MODE" button
 rpio.open(rpioModePin, rpio.INPUT, rpio.PULL_UP);
-console.log('Mode Pin' + rpioModePin + ' is currently ready... STATE:' + (rpio.read(rpioModePin) ? 'high' : 'low'));
+//console.log('Mode Pin' + rpioModePin + ' is currently ready... STATE:' + (rpio.read(rpioModePin) ? 'high' : 'low'));
 
 //Ammo Pin tied to trigger pull
 rpio.open(rpioTriggerPin, rpio.INPUT, rpio.PULL_UP);
-console.log('Trigger pin' + rpioTriggerPin + ' is currently ready... STATE:' + (rpio.read(rpioTriggerPin) ? 'high' : 'low'));
+//console.log('Trigger pin' + rpioTriggerPin + ' is currently ready... STATE:' + (rpio.read(rpioTriggerPin) ? 'high' : 'low'));
+
+console.log('Child Processes: ');
+console.log(children);
 
 
 
@@ -71,6 +74,8 @@ function handler (req, res) { //create server
         }
       });
     });
+    console.log('Child Processes: ');
+    console.log(children);
 
   }
   if (req.url == '/zoomCamera1.html') {
@@ -97,8 +102,10 @@ function handler (req, res) { //create server
       });
       
     //});
-
+    console.log('Child Processes: ');
+    console.log(children);
   }
+
   if (req.url == '/accelerometer.html') {
     screen = req.url;
     killProcesses();
@@ -116,13 +123,15 @@ function handler (req, res) { //create server
         socket.emit('accelerometer', chunk);
       });
     //});
+    console.log('Child Processes: ');
+    console.log(children);
   }
 
 
   if (req.url == '/servo.html') {
     screen = req.url;
     killProcesses();
-    spawnCamera();
+    //spawnCamera();
 
     motor = new Gpio(17, {mode: Gpio.OUTPUT})
     //io.sockets.on('connection', function (socket) {
@@ -172,6 +181,8 @@ function handler (req, res) { //create server
       // });
         
     //});
+    console.log('Child Processes: ');
+    console.log(children);
   }
 
   
@@ -179,6 +190,8 @@ function handler (req, res) { //create server
     killProcesses();
     let doom = spawn('/usr/games/chocolate-doom');
     children.push(doom);
+    console.log('Child Processes: ');
+    console.log(children);
   }
 
 
@@ -410,6 +423,7 @@ function spawnCamera() {
 function killProcesses() {
 
   children.forEach(function(child) {
+    console.log(child);
     child.kill('SIGINT');
     exec('sudo kill -9 ' + child.pid);
 

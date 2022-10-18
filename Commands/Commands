@@ -3,6 +3,10 @@
 
 # List all processes running, like NodeJS server, then find the process number.
 ps aux | grep node
+
+# For chocolate-doom
+ps aux | grep chocolate-doom
+
 # Kill the process you just found by its ID
 kill -9 491
 
