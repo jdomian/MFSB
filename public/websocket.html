@@ -1,0 +1,73 @@
+<div id="content"></div>
+<img src="http://10.0.0.70:8000/stream.mjpg" id="image-streamer" style="position: fixed; height: 100vh; width: vw; object-fit: contain;">
+
+<script type="text/javascript">  
+    var content = document.getElementById('content');
+    const socket = new WebSocket('ws://10.0.10.100:1337');
+    const FPS = 2;
+    let data;
+    let img = document.getElementById('image-streamer');
+
+    
+//     function toDataURL(src, callback, outputFormat) {
+//   var img = new Image();
+//   img.crossOrigin = 'Anonymous';
+//   img.onload = function() {
+//     var canvas = document.createElement('CANVAS');
+//     var ctx = canvas.getContext('2d');
+//     var dataURL;
+//     canvas.height = this.naturalHeight;
+//     canvas.width = this.naturalWidth;
+//     ctx.drawImage(this, 0, 0);
+//     dataURL = canvas.toDataURL(outputFormat);
+//     callback(dataURL);
+//   };
+//   img.src = src;
+//   if (img.complete || img.complete === undefined) {
+//     img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+//     img.src = src;
+//   }
+// }
+
+const getFrame = () => {
+            const canvas = document.createElement('canvas');
+            canvas.getContext('2d').drawImage(img, 0, 0);
+            const data = canvas.toDataURL('image/gif');
+            return data;
+        }
+
+
+        socket.onopen = () => {
+            
+            setInterval(() => {
+                socket.binaryType = "arraybuffer";
+                socket.send(getFrame());
+            }, 1000 / FPS);
+        }
+
+
+
+
+//     socket.onopen = function () {
+//         toDataURL(
+//   'http://10.0.0.70:8000/stream.mjpg',
+//   function(dataUrl) {
+//     data = dataUrl;
+//     //socket.binaryType = "arraybuffer";
+//     console.log(dataUrl);
+//     socket.send(dataUrl);
+
+//   }
+  
+// )
+
+//     };
+
+    socket.onmessage = function (message) {
+        content.innerHTML += message.data +'<br />';
+    };
+
+    socket.onerror = function (error) {
+        console.log('WebSocket error: ' + error);
+    };
+</script>

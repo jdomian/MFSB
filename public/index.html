@@ -1,0 +1,181 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="/dist/css/styles.css" rel="stylesheet"/>
+        <script src="/js/jquery/jquery-3.6.0.min.js"></script>
+
+    </head>
+    <body>
+        <header></header>
+
+        <div id="app">
+            <!-- INITIAL SCREEN - NO BUTTONS -->
+            <div data-nav="init" data-nav-to="main" class="nav"></div>
+            <!-- MAIN NAV -->
+            <div data-nav="main" class="sub nav">
+                <div data-nav-to="zoom" class="arc c4 p1">
+                    <i class="fa-duotone fa-telescope"></i>
+                </div>
+                <div data-nav-to="crosshairs" class="arc c8 p3">
+                    <i class="fa-regular fa-crosshairs"></i>
+                </div>
+                <div data-nav-to="accelerometer" class="arc c8 p4">
+                    <i class="fa-regular fa-gauge-high"></i>"></i>
+                </div>
+                <div data-nav-to="ai-assist" class="arc c8 p5">
+                    <i class="fa-regular fa-microchip-ai"></i>
+                </div>
+                <div data-nav-to="reboot-shutdown" class="arc c8 p6">
+                    <i class="fa-sharp fa-solid fa-power-off"></i>
+                </div>
+                <div onclick="window.location.reload()" class="arc c8 p7 cyan">
+                    <i class="fa-sharp fa-solid fa-rotate-right"></i>
+                </div>
+                <div data-nav-to="init" class="arc c8 p8 red ripple">
+                    <i class="fa-solid fa-xmark-large"></i>
+                </div>
+            </div>
+            <!-- ZOOM NAV/CONTROLS -->
+            <div data-nav="zoom" class="sub nav">
+                <div onclick="mfsb.zoomIn()" class="arc c4 p1">
+                    <i class="fa-regular fa-plus"></i>
+                </div>
+                <div onclick="mfsb.zoomOut()" class="arc c4 p2">
+                    <i class="fa-regular fa-minus"></i>
+                </div>
+                <div class="arc c4 p3">
+                    <input type="range" min="0" max="100" value="0" step="10" />
+                </div>
+                <div onclick="window.location.reload()" class="arc c8 p7 cyan">
+                    <i class="fa-sharp fa-solid fa-rotate-right"></i>
+                </div>
+                <div data-nav-to="init" class="arc c8 p8 red">
+                    <i class="fa-solid fa-xmark-large"></i>
+                </div>
+            </div>
+            <!-- CROSSHAIR NAV/CONTROLS -->
+            <div data-nav="crosshairs" class="sub nav">
+                <div onclick="mfsb.crossHairType('standard')" class="arc c8 p1"><i class="fa-thin fa-plus-large"></i></div>
+                <div onclick="mfsb.crossHairType('thin')" class="arc c8 p2"><i class="fa-thin fa-crosshairs"></i></div>
+                <div onclick="mfsb.crossHairType('simple')" class="arc c8 p3"><i class="fa-thin fa-crosshairs-simple"></i></div>
+                <div class="arc c8 p4"><i class="far fa-angry"></i></div>
+                <div class="arc c8 p5"><i class="far fa-angry"></i></div>
+                <div class="arc c8 p6"><i class="far fa-angry"></i></div>
+                <div class="arc c8 p7"><i class="far fa-minus"></i></div>
+                <div data-nav-to="main" class="arc c8 p8"><i class="fa-solid fa-circle-chevron-left"></i></div>
+            </div>
+            <!-- ACCELEROMETER NAV/CONTROLS -->
+            <div data-nav="accelerometer" class="sub nav">
+                <div class="center-info">
+                    <i class="fa-regular fa-gauge-high"></i>
+                    <div id="debug-accel" class="center-info-text">Accelerometer</div>
+
+                        <div id="accel-Y-line" class="accel-line"></div>
+                        <div id="accel-X-line" class="accel-line"></div>
+                        <div id="accel-Z-line" class="accel-line"></div>
+
+                </div>
+                <div onclick="mfsb.accelerometerStart()" class="arc c4 p1 green">
+                    <i class="fa-regular fa-circle-play"></i>
+                </div>
+                <div onclick="mfsb.accelerometerStop()" class="arc c4 p2 red">
+                    <i class="fa-regular fa-circle-stop"></i>
+                </div>
+                <div onclick="mfsb.accelerometerPin()" class="arc c4 p3">
+                    <i class="fa-regular fa-thumbtack"></i>
+                </div>
+                <div onclick="window.location.reload()" class="arc c8 p7 cyan">
+                    <i class="fa-sharp fa-solid fa-rotate-right"></i>
+                </div>
+                <div data-nav-to="main" class="arc c8 p8">
+                    <i class="fa-solid fa-circle-chevron-left"></i>
+                </div>
+            </div>
+            <!-- REBOOT-SHUTDOWN NAV/CONTROLS -->
+            <div data-nav="reboot-shutdown" class="sub nav">
+                <div onclick="mfsb.sudoReboot()" class="arc c4 p3 orange">
+                    <i class="fa-duotone fa-rotate"></i>
+                </div>
+                <div onclick="mfsb.sudoShutdown()" class="arc c4 p2 red">
+                    <i class="fa-sharp fa-solid fa-power-off"></i>
+                </div>
+                <div onclick="window.location.reload()" class="arc c8 p7 cyan">
+                    <i class="fa-sharp fa-solid fa-rotate-right"></i>
+                </div>
+                <div data-nav-to="main" class="arc c8 p8">
+                    <i class="fa-solid fa-circle-chevron-left"></i>
+                </div>
+            </div>
+            <!-- AI NAV/CONTROLS -->
+            <div data-nav="ai-assist" class="sub nav">
+
+                <div class="center-info">
+                    <i class="fa-regular fa-microchip-ai"></i>
+                    <div id="debug-ai" class="center-info-text">AI Detection</div>
+                </div>
+                <canvas id="tracking-canvas"></canvas>
+                
+                <!-- <div onclick="mfsb.ml5AIDetect()" class="arc c8 p5 green"><i class="fa-sharp fa-solid fa-circle-play"></i></div>
+                <div onclick="mfsb.ml5AIStop()" class="arc c8 p6 red"><i class="fa-sharp fa-solid fa-circle-stop"></i></div> -->
+                <div onclick="mfsb.lockTarget()" class="arc c8 p3 red"><i class="fa-regular fa-crosshairs-simple"></i></div>
+                <div onclick="mfsb.trackAndRenderLocalWorker()" class="arc c8 p4"><i class="fa-regular fa-users-viewfinder"></i></div>
+                <div onclick="" class="arc c8 p5 green"><i class="fa-sharp fa-solid fa-circle-play"></i></div>
+                <div onclick="mfsb.tensorFlowStop()" class="arc c8 p6 red"><i class="fa-sharp fa-solid fa-circle-stop"></i></div>
+                <div onclick="window.location.reload()" class="arc c8 p7 cyan"><i class="fa-sharp fa-solid fa-rotate-right"></i></div>
+                <div data-nav-to="main" class="arc c8 p8"><i class="fa-solid fa-circle-chevron-left"></i></div>
+
+                
+            </div>
+
+            <div id="pinned">
+                <div id="main-info-text"></div>
+                <div id="crosshair">
+                    <div id="standard" class="crosshair">
+                        <div class="hz"></div>
+                        <div class="vt"></div>
+                    </div>
+                    <div id="thin" class="crosshair">
+                        <i class="fa-thin fa-crosshairs"></i>
+                    </div>
+                    <div id="simple" class="crosshair">
+                        <i class="fa-thin fa-crosshairs-simple"></i>
+                    </div>
+                </div>
+                <div id="accelerometer">
+
+                </div>
+            </div>
+            
+            <div id="camera-wrapper">
+                <!-- <video autoplay="true" id="videoElement" muted src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"></video> -->
+                <!-- <video autoplay="true" id="videoElement" muted src="//localhost:3000/"></video> -->
+                <!-- <img src="http://10.0.0.70:3000/stream.mjpg" /> -->
+                <!-- <img src="http://10.0.0.70:3000/stream.mjpg" /> -->
+                <!-- <video controls autoplay muted id="stream" style="width: 100%; height: 100%;"></video> -->
+                <div id="streamtage">
+                    <div id="liveView" class="videoView">
+                        <label id="TFTargetLabel" class="locating">Searching...</label>
+                        <img src="stream.mjpg" id="stream" style="position: fixed; height: 100vh; width: vw; object-fit: contain;" />
+                        <div id="TFTarget"></div>
+                        <canvas id="base64-canvas" style="z-index: -10;"></canvas>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+            <!-- Import TensorFlow.js library -->
+            <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js" type="text/javascript"></script> -->
+            <!-- Load the coco-ssd model to use to recognize things in images -->
+            <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script> -->
+            <!-- Import the page's JavaScript to do some stuff -->
+            <!-- <script src="/js/tfscript.js" defer></script> -->
+
+            <!-- <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script> -->
+            <script src="socket.io/socket.io.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@cloud-annotations/object-tracking"></script>
+            <script src="/js/init.js"></script>
+            <script src="/js/app.js"></script>
+    </body>
+</html>

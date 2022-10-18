@@ -1,161 +1,63 @@
-# MFSB - Hyperpixel2r
-MFSB with touchscreen Hyperpixel 2.0 Round display, auto night-vision and accerometer.
+# raspberrypi_node_camera_web_streamer
+## Compatibility Notice
+This project is *NOT* compatible with the latest Raspberry Pi OS 11 (Bullseye). **Please use OS 10 (Buster) for now.** Support for OS 11+ will be added once general Node support for `libcamera` is available.
 
-## Hardware
-1. Raspberry Pi Zero 2 W (2021)
-2. Raspberry Pi Camera Board - Night Vision & Adjustable-Focus Lens (5MP)
+## Stream a realtime raspberry pi camera feed through an HTML web page
 
+After many hours of searching the web, I realized that, as prolific as raspberry pi's, cameras, and node.js are, there was no fusion of the three. I wrote this node.js solution in response to that in hopes that others may find it useful. This project can serve as a stand-alone video streamer or as a template for a much more complicated project.
 
-## Tech Stack
-1. Raspian OS (Buster)
-2. NodeJS
-3. NPM
-4. Chromium Browser (Headless, kiosk)
+The camera is streamed as a .mjpeg file into a &lt;img /&gt; tag. The implementation is simple yet fully effective.
 
-## Helper Commands
-Run these after SSH into the MFSB to reboot Chromium and other service needed to run the devices.
-```markdown
-#Shutdown Raspberry Pi, right now!
-sudo shutdown -h now
+## Simple Example Project
+A simple example project can be installed from git:
 
-# List all processes running, like NodeJS server, then find the process number.
-ps aux | grep node
-# Kill the process you just found by its ID
-kill -9 491
+Assuming you already have node.js set up, steps to install are:
 
-# See how long all startup processes take on OS load. Disable some later to speed up boot times
-systemd-analyze blame
+1. Clone the repository: `git clone https://github.com/caseymcj/raspberrypi_node_camera_web_streamer`
+1. Restore dependencies by running `npm install` from within the folder of the repository
+1. Start the server by running `node index.js`
+1. Navigate to the site in a web browser by going to `http://<ip_address>:3000`
 
-# Run NodeJS webserver to MFSB located at /home/pi/MFSB.webserver.js
-sudo node /home/pi/MFSG/webserver.js
+Anything inside the `public` folder is hosted as static content. The index.html page gives an example of how to stream from the camera. The key tag for this is 
+```
+<img src="stream.mjpg" />
+```
+`stream.mjpg` is hosted via Express in `index.js`.
 
-# Start the Camera module for MFSB
-sudo node node_modules/raspberrypi-node-camera-web-streamer/index.js
+Streaming quality settings can also be modified within the `index.js` file.
 
-# Refresh the browser for MFSB, this simulates pressing "F5" to refresh the browser
-DISPLAY=:0 xdotool key F5
+## Installation
+Make sure you have Node JS installed. I've found [this easy guide very helpful for installing Node on 32-bit Raspberry PI OS](https://hassancorrigan.com/blog/install-nodejs-on-a-raspberry-pi-zero/).
 
+### Install via npm
+
+### **NOTE: MAKE SURE THE CAMERA INTERFACE IS ENABLED USING `sudo raspi-config` (under interface options). OTHERWISE, AN ERROR WILL BE THROWN WHEN THE CAMERA INITIALIZES.**
+
+Execute the below command:
+```
+npm install raspberrypi-node-camera-web-streamer
 ```
 
-## Debugging
-1. Start MFSB Pi with standard USB Micro, or from switch on side of PiSugar2 installed in hull
-2. SSH into MFSB with username pi@<IP.AD.DR.ESS>:8080
-3. Wait for boot into interface for ammo counter
-4. Use a browser to go to IP address of your device in your LAN, with port 8080 for Chromium interface
-
-## Hardware
-  * Raspberry Pi Zero 2 W (2021 Model)
-  * Adafruit MSA311 Triple Axis Accelerometer [adafruit.com]: https://www.adafruit.com/product/5309
-  * Raspberry Pi NoIR Camera Board v2 [adafruit.com]: https://www.adafruit.com/product/3100
-  * PiSugar2 1200mAh Battery [pisugar.com]: https://www.pisugar.com/
-  * Waveshare 2.0/1.3 LCD Screen [Amazon]: https://www.waveshare.com/wiki/2inch_LCD_Module?Amazon
-  * MicroServo
-  * Custom 3D Printed Parts
-
-## Software Components
-  * Raspberry Pi RaspbianOS (Buster)
-  * NodeJS 16 for armv71 [nodejs.org]: https://nodejs.org/dist/v16.13.1/node-v16.13.1-linux-armv7l.tar.xz
-  * fbcp-ili9341 Display Drivers [github]: https://github.com/juj/fbcp-ili9341
-  * Openbox and XStart to load Chromium
-  * Chromium Browser flagged with --kiosk
-  * Tensorflow Lite for target tracking
-
-## Startup "Linked" Files
-Created some "linked" files in the root of the repo. These change the startup behavior of what loads on boot, such as the Chromium auto boot in kiosk mode, the display driver and nodejs server.
-  * `boot-config` --> linked to the root pi `/book/config.txt` with setting for HDMI display overrides, overclocking and Waveshare LED Display resolution settings and orientation.
-  * `kiosk-autostart` --> linked to `/etc/xdg/openbox/autostart` which contains the Chromium browser settings to auto start Chromium in fullscreen, kiosk mode and with autoplay for mp4s enabled.
-  * `pi-startup` --> linked to `/etc/rc.local` which contains scripts needed to start the drivers built from fbcp-ili9341, start the nodejs server, start socket.io for GPIOs, start the webserver to serve pages and to startup the camera module, all of this on initial boot.
-  
-  
-## autostart Setup
-The following is what startx uses to load chromium with arguments to avoid CORS and allow local files access.
-```bash
-#
-# These things are run when an Openbox X Session is started.
-# You may place a similar script in $HOME/.config/openbox/autostart
-# to run user-specific things.
-#
-
-# If you want to use GNOME config tools...
-#
-#if test -x /usr/lib/arm-linux-gnueabihf/gnome-settings-daemon >/dev/null; then
-#  /usr/lib/arm-linux-gnueabihf/gnome-settings-daemon &
-#elif which gnome-settings-daemon >/dev/null 2>&1; then
-#  gnome-settings-daemon &
-#fi
-
-# If you want to use XFCE config tools...
-#
-#xfce-mcs-manager &
-
-# ---MFSB---
-# Here and below are additions made for MFSB Hyperpixel2r. (Sept 2022)
-#
-# Disable any form of screen saver / screen blanking / power management
-xset s off
-xset s noblank
-xset -dpms
- 
-# Allow quitting the X server with CTRL-ATL-Backspace
-setxkbmap -option terminate:ctrl_alt_bksp
- 
-# Start Chromium in kiosk mode
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/'Local State'
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/; s/"exit_type":"[^"]\+"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
-
-# Set the URL for the browser to automatically load as the default.
-#chromium-browser 'http://10.0.10.10:3000'
- 
-# Runs with flags for performance nad disabling security within local environment.
-#chromium-browser --disable-infobars --disable-notifications --kiosk 'http://10.0.10.10:3000'
-
-# Experimental
-# Fullscreen kiosk with no bars
-chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required --window-size=480,480 'http://10.0.0.132:3000/'
-```
-
-
-##rc.local Setup
-```bash
-#!/bin/sh -e
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
-
-# Print the IP address
-_IP=$(hostname -I) || true
-if [ "$_IP" ]; then
-  printf "My IP address is %s\n" "$_IP"
-fi
-
-sudo node /home/pi/MFSB/server.js > /home/pi/MFSB/log.txt 2>&1 &
-
-exit 0
-```
-
-## NodeJS Express Simple Server
-
-### Installation
-```npm install ws pi-camera```
-
-```javascript
-//node server.js
-
+Then in your node script, you can start it like this:
+```js
 const express = require('express')
-const app = express();
-const fs = require('fs')
-const port = 3000;
+const app = express()
+const videoStream = require('raspberrypi-node-camera-web-streamer');
+videoStream.acceptConnections(app, {
+    width: 1280,
+    height: 720,
+    fps: 16,
+    encoding: 'JPEG',
+    quality: 7 //lower is faster
+}, '/stream.mjpg', true);
 
-//Do Stuff Here
-
-app.use(express.static(__dirname+'/public'));
-app.listen(port, () => console.log(`Example app listening on port ${port}! In your web browser, navigate to http://<IP_ADDRESS_OF_THIS_SERVER>:3000`));
+app.listen(3000, () => console.log(`Listening on port ${port}!`));
 ```
+The video frames can be continuously streamed using an `img` HTML tag (the server tells it to continually refresh / stream the image):
+```
+<img src="http://<server_address>/stream.mjpg" />
+```
+
+`videoStream.acceptConnections` accepts 4 parameters: `express` module, `settings object` (optional), `path` to host the streaming resource (optional), and `isVerbose` (optional).
+
+The last video frame captured can also be retrieved as a .jpg image by calling `videoStream.getLastFrame()`. If no frame has been captured (which can happen if no users have connected yet), then this will be `null`.
