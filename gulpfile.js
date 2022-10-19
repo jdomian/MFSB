@@ -4,6 +4,7 @@ const fs = require('fs');
 const root = __dirname;
 const source = root + '/public';
 const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
 const csso = require('gulp-csso');
 const sass = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
@@ -11,6 +12,9 @@ const minify = require('gulp-minify');
 const cleanCSS = require('gulp-clean-css');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync	= require('browser-sync');
+const os = require('os');
+const interfaces = os.networkInterfaces();
+const serverIP = interfaces.wlan0[0].address;
 
 //--PATHS--//
 const paths = {
@@ -118,20 +122,43 @@ function scripts(task) {
     .pipe(gulp.dest(paths.js.dest))
     .pipe(browserSync.stream());
 }
+
 //What to watch for
-function watch() {
+function watch(done) {
   browserSync.init({
-    server: true,
-    open: 'external'
+    //server: true,
+    open: 'external',
+    host: serverIP,
+    port: 8000,
+    proxy: 'http://' + serverIP + ':8000'
   });
   gulp.watch(paths.scss.src, scss);
   gulp.watch([paths.scss.dest, paths.css.src], styles);
   gulp.watch(paths.js.src, scripts);
   gulp.watch(paths.html.src).on('change', browserSync.reload);
+  done();
+}
+
+function serve(done) {
+  nodemon({
+    script: 'index.js',
+    //ext: 'js',
+    env: {
+      NODE_ENV: 'dev',
+      PORT: 8000
+    },
+    ignore: [
+      './node_modules/**',
+      './public/**'
+    ],
+    done: done
+  });
+  done();
 }
 
 //Tasks run in series or parallel using `gulp.series` and `gulp.parallel`
-let build = gulp.series(clean, scss, styles, jquery, scripts, watch);
+let build = gulp.series(serve, clean, scss, styles, jquery, scripts, watch);
+
 
 //CommonJS `exports` module notation to declare tasks
 exports.clean = clean;
@@ -139,6 +166,7 @@ exports.scss = scss;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.watch = watch;
+exports.serve = serve;
 exports.build = build;
 
 //Define default task that can be called by just running `gulp` from cli

@@ -10,4 +10,4 @@ cd MFSB
 git checkout hyperpixel2r
 
 # Install all node dependencies with NPM
-npm install express workerpool socket.io raspberry-pi-camera-native @cloud-annotations/object-tracking canvas
+sudo npm install express workerpool socket.io raspberry-pi-camera-native @cloud-annotations/object-tracking canvas

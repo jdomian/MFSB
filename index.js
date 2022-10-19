@@ -1,15 +1,20 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+
 const { kill } = require('process');
 const spawn = require('child_process').spawn;
 const exec = require('child_process').exec;
 const workerpool = require('workerpool');
 const pool = workerpool.pool(__dirname + '/myWorker.js');
 //const io = require('socket.io')(httpServer, {allowEIO3: true}) //require socket.io module and pass the http object (server)
+const os = require('os');
+const interfaces = os.networkInterfaces();
+const serverIP = interfaces.wlan0[0].address;
 const port = 8000;
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}! In your web browser, navigate to http://<IP_ADDRESS_OF_THIS_SERVER>:3000`));
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}! In your web browser, navigate to http://${serverIP}:${port}`));
 let children = [];
+
 
 const io = require('socket.io')(server, {
     cors: {

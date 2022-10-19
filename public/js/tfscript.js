@@ -29,7 +29,7 @@ function predictWebcam() {
     for (let n = 0; n < predictions.length; n += 1) {
 
       if (predictions[n].score > 0.66) {
-        label.innerHTML = predictions[n].class + '</br>' + Math.round(parseFloat(predictions[n].score) * 100) + '% confidence.';;
+        label.innerHTML = predictions[n].class + '</br>' + Math.round(parseFloat(predictions[n].score) * 100) + '% confidence.';
         label.classList.remove("locating");
 
         styles = {

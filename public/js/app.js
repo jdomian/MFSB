@@ -250,6 +250,7 @@ let mfsb = {
     tensorFlowStop() {
         clearInterval(tensorFlow);
         $('#debug-ai').text('AI Stopped');
+        console.log('test');
     },
     trackAndRenderLocal() {
         const self = this;
