@@ -1,32 +1,39 @@
 {
-  "name": "raspberrypi-node-camera-web-streamer",
-  "version": "1.1.2",
-  "description": "HTTP video streamer for raspberrypi.",
-  "main": "index.js",
+  "name": "www",
+  "version": "1.0.0",
+  "description": "Gulp4 install",
+  "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"No test specified\" && exit 1"
+    "test": "test",
+    "gulp": "gulp"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "latest",
+    "del": "latest",
+    "gulp": "latest",
+    "gulp-babel": "latest",
+    "gulp-clean-css": "latest",
+    "gulp-cli": "latest",
+    "gulp-concat": "latest",
+    "gulp-csso": "^4.0.1",
+    "gulp-install": "latest",
+    "gulp-less": "latest",
+    "gulp-load-plugins": "latest",
+    "gulp-minify": "latest",
+    "gulp-rename": "latest",
+    "gulp-sass": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "latest",
+    "sass": "latest"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/caseymcj/raspberrypi_node_camera_web_streamer"
+    "url": "git+https://github.com/jdomian/MFSB.git"
   },
-  "keywords": [
-    "raspberry",
-    "pi",
-    "node",
-    "camera",
-    "html",
-    "web",
-    "stream",
-    "live"
-  ],
-  "author": "Casey Johnson",
-  "license": "MIT",
-  "dependencies": {
-    "@cloud-annotations/object-tracking": "0.0.5",
-    "canvas": "^2.10.1",
-    "express": "^4.17.1",
-    "raspberry-pi-camera-native": "0.0.0",
-    "request": "^2.88.2"
-  }
+  "bugs": {
+    "url": "https://github.com/jdomian/MFSB/issues"
+  },
+  "homepage": "https://github.com/jdomian/MFSB#readme"
 }

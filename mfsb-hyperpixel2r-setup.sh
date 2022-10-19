@@ -1,12 +1,13 @@
 #!/bin/bash
-# -- FOR HYPERPIXEL2R
 
-git clone https://github.com/pimoroni/hyperpixel2r
-cd hyperpixel2r
-sudo ./install.sh
+# Clone the MFSB repository
+git clone https://github.com/jdomian/MFSB.git
 
-git clone https://github.com/pimoroni/hyperpixel2r-python
-cd hyperpixel2r-python
-sudo ./install.sh
+# Change directory to MFSB
+cd MFSB
 
-sudo reboot
+# Checkout hyperpixel2r Branch
+git checkout hyperpixel2r
+
+# Install all node dependencies with NPM
+npm install express workerpool socket.io raspberry-pi-camera-native @cloud-annotations/object-tracking canvas

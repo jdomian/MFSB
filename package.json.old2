@@ -1,0 +1,40 @@
+{
+  "name": "mfsb",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Mutha F*****' Space Blaster ",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test",
+    "gulp": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdomian/MFSB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdomian/MFSB/issues"
+  },
+  "homepage": "https://github.com/jdomian/MFSB#readme",
+  "dependencies": {
+    "@cloud-annotations/object-tracking": "^0.0.5",
+    "browser-sync": "^2.27.10",
+    "del": "^7.0.0",
+    "express": "^4.18.2",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-cli": "^2.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^4.0.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "node-fetch": "^2.6.1",
+    "raspberry-pi-camera-native": "^0.0.0",
+    "sass": "^1.55.0",
+    "socket.io": "^4.5.3",
+    "workerpool": "^6.2.1"
+  }
+}

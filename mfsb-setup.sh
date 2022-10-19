@@ -20,11 +20,11 @@ sudo apt install build-essential -y
 # Install GIT
 sudo apt-get install git -y
 
-# Install Python3 & pip
+# Install Python3
 sudo apt install python3 -y
 
 # Install i2c-tools
-sudo apt-get install i2c-tools
+sudo apt-get install i2c-tools -y
 
 # Clone the MFSB repository
 git clone https://github.com/jdomian/MFSB.git
@@ -32,5 +32,11 @@ git clone https://github.com/jdomian/MFSB.git
 # Change directory to MFSB
 cd MFSB
 
-# Checkout hyperpixel2r Branch
-git checkout hyperpixel2r
+# Install all node dependencies with NPM
+npm install n express workerpool socket.io raspberry-pi-camera-native gulp gulp-cli
+
+# Install Gulp globally with sudo for development
+sudo npm install --global gulp-cli
+
+# Install gulp dependencies
+npm install gulp-csso gulp-sass sass gulp-concat gulp-minify gulp-clean-css gulp-sourcemaps browser-sync del node-fetch@2.6.1
