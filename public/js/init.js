@@ -1,3 +1,5 @@
+/******************** init.js ********************/
+
 let camera;
 document.addEventListener("DOMContentLoaded", function(event) { 
 

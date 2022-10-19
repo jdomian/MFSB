@@ -28,8 +28,12 @@ const paths = {
   styles: {
     dest: source + '/dist/css/'
   },
+  jQuery: {
+    src: source + '/js/jquery/*.js',
+    dest: source + '/js/jquery/combined/'
+  },
   js: {
-    src: source + '/js/**/*.js',
+    src: source + '/js/*.js',
     dest: source + '/dist/js/'
   },
   html: {
@@ -80,18 +84,18 @@ function scss(task) {
 //CSS - Create sourcemaps, compiles and cleans CSS, then combines compiled SCSS and CSS files into 1 `styles.css` file.
 function styles(task) {
   return gulp.src([paths.scss.dest + 'styles.css', paths.css.src], { sourcemaps: true, allowEmpty: true })
-    // .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init())
     .pipe(concat('styles.css'))
     // .pipe(cleanCSS())
     // .pipe(csso())
-    // .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.styles.dest))
     .pipe(browserSync.stream());
 }
 //jQuery - Loads first before all scripts as is often a dependency.
 function jquery(task) {
   console.log(task);
-  return gulp.src(source + '/js/jquery/*.js', { allowEmpty: true })
+  return gulp.src(paths.jQuery.src)
     .pipe(sourcemaps.init())
     .pipe(concat('jquery.combined.js'))
     .pipe(minify({
@@ -102,17 +106,16 @@ function jquery(task) {
       ignoreFiles: ['-min.js','.min.js','/js/dist/*.js']
     }))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest(paths.js.dest))
+    .pipe(gulp.dest(paths.jQuery.dest))
     .pipe(browserSync.stream());
 }
 //JS - Appends to the end of minified jQuery. Combines jQuery and JS files into 1 minified script.
 function scripts(task) {
   console.log(task);
-  return gulp.src([source + '/js/jquery/jquery.combined.min.js', paths.js.src], { allowEmpty: true })
-    .pipe(sourcemaps.init())
+  return gulp.src([source + '/js/init.js', source + '/js/app.js'])
     .pipe(concat('scripts.js'))
+    .pipe(sourcemaps.init())
     .pipe(minify({
-      noSource: true,
       ext: {
           min: '.min.js'
       },
@@ -157,7 +160,7 @@ function serve(done) {
 }
 
 //Tasks run in series or parallel using `gulp.series` and `gulp.parallel`
-let build = gulp.series(serve, clean, scss, styles, jquery, scripts, watch);
+let build = gulp.series(serve, clean, scss, styles, scripts, watch);
 
 
 //CommonJS `exports` module notation to declare tasks

@@ -1,3 +1,5 @@
+/******************** app.js ********************/
+
 var App = () => function() {
     console.log('app start');
     alert('hi');
@@ -19,7 +21,8 @@ let tensorFlow;
 let mfsb = {
     cameraZoomLevel: 1,
     init() {
-        
+        console.log('Mutha Fuckin Space Blaster Initialized.');
+        mfsb.crossHairType();
     },
     zoomIn() {
         let zoom = this.cameraZoomLevel * 2;

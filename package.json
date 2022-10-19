@@ -26,7 +26,7 @@
     "gulp-rename": "latest",
     "gulp-sass": "latest",
     "gulp-sourcemaps": "latest",
-    "gulp-uglify": "latest",
+    "gulp-uglify": "^3.0.2",
     "sass": "latest"
   },
   "repository": {
