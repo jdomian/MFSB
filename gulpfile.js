@@ -43,11 +43,6 @@ console.log('HTML Source: ' + paths.html.src);
 //--TASKS--//
 //Clean
 async function clean() {
-  // return del([
-  //   source + '/dist/css/',
-  //   source + '/dist/js/'
-  // ]);
-
   let cssFolder = source + '/dist/css/';
   let jsFolder = source + '/dist/js/';
 
@@ -136,8 +131,7 @@ function watch() {
 }
 
 //Tasks run in series or parallel using `gulp.series` and `gulp.parallel`
-//let build = gulp.series(clean, scss, styles, jquery, scripts, watch);
-let build = gulp.series(clean);
+let build = gulp.series(clean, scss, styles, jquery, scripts, watch);
 
 //CommonJS `exports` module notation to declare tasks
 exports.clean = clean;

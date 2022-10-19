@@ -29,14 +29,21 @@ sudo apt-get install i2c-tools -y
 # Clone the MFSB repository
 git clone https://github.com/jdomian/MFSB.git
 
+# Create a symlink from lowercase to uppercase MFSB
+ln -s ~/MFSB ~/mfsb
+
 # Change directory to MFSB
 cd MFSB
-
-# Install all node dependencies with NPM
-npm install n express workerpool socket.io raspberry-pi-camera-native gulp gulp-cli
 
 # Install Gulp globally with sudo for development
 sudo npm install --global gulp-cli
 
+# Initialize NPM with packages using the repositories package.json.
+npm init -y
+npm install
+
+# Install all node dependencies with NPM
+npm install n express workerpool socket.io raspberry-pi-camera-native gulp gulp-cli
+
 # Install gulp dependencies
-npm install gulp-csso gulp-sass sass gulp-concat gulp-minify gulp-clean-css gulp-sourcemaps browser-sync del node-fetch@2.6.1
+npm install gulp-csso gulp-sass sass gulp-concat gulp-minify gulp-clean-css gulp-sourcemaps browser-sync del node-fetch
