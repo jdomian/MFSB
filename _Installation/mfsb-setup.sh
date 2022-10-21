@@ -18,14 +18,14 @@ curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash 
 
 # Install NodeJS now that it is added to the repository list.
-sudo apt install nodejs -y
+sudo apt-get install -y nodejs
 
 # Install additional like python3 for NodeJS & NPM build tools.
-sudo apt install build-essential -y
 sudo apt-get install gcc g++ make -y
+sudo apt install build-essential -y
 
 # Install GIT
-sudo apt-get install git -y
+sudo apt-get install git -y 
 
 # Install Python3-pip... this one takes a while
 sudo apt-get install python3-pip -y
@@ -53,6 +53,7 @@ cd MFSB
 # Initialize NPM with packages using the repositories package.json.
 sudo npm install
 sudo npm install raspberry-pi-camera-native
+npm install skia-canvas
 
 
 # (Optional)
@@ -65,3 +66,11 @@ sudo npm install raspberry-pi-camera-native
 
 # Install other dependencies for canvas
 #sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+
+# ALL INSTALL SCRIPTS
+sudo apt-get install git -y &
+sudo apt-get install python3-pip -y &
+sudo apt-get install i2c-tools -y &
+sudo apt-get update -y & 
+sudo npm install --global gulp-cli
