@@ -45,7 +45,7 @@ git clone https://github.com/jdomian/MFSB.git
 # Create a symlink from lowercase to uppercase MFSB
 ln -s ~/MFSB ~/mfsb
 
-# Change directory to MFSB
+# Change directory to MFSB/www root for MFSB v2 (Rivalburn version)
 cd mfsb
 
 # Initialize NPM with packages using the repositories package.json.

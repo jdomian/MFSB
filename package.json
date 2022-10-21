@@ -1,13 +1,13 @@
 {
-  "name": "www",
-  "version": "1.0.0",
+  "name": "mfsb-hyperpixel2r",
+  "version": "3.0.0",
   "description": "Gulp4 install",
   "main": "gulpfile.js",
   "scripts": {
     "test": "test",
     "gulp": "gulp"
   },
-  "author": "",
+  "author": "Jonathan Domian",
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^2.27.10",
