@@ -11,6 +11,12 @@ sudo apt-get upgrade -y
 # Add the repository for the latest version of NodeJS
 curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
 
+# Install Node Version Manager (Just in case)
+# Use: 
+# $ nvm install 16
+# $ nvm use 16
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash 
+
 # Install NodeJS now that it is added to the repository list.
 sudo apt install nodejs -y
 
@@ -23,6 +29,7 @@ sudo apt-get install git -y
 
 # Install Python3
 sudo apt install python3 -y
+sudo apt-get install python3-pip -y
 
 # Install i2c-tools
 sudo apt-get install i2c-tools -y

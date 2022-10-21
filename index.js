@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 
 const { kill } = require('process');
 const spawn = require('child_process').spawn;
 const exec = require('child_process').exec;
 const workerpool = require('workerpool');
-const pool = workerpool.pool(__dirname + '/myWorker.js');
+const pool = workerpool.pool(__dirname + '/object-tracking-worker.js');
 //const io = require('socket.io')(httpServer, {allowEIO3: true}) //require socket.io module and pass the http object (server)
 const os = require('os');
 const interfaces = os.networkInterfaces();
@@ -27,7 +28,26 @@ const io = require('socket.io')(server, {
 const videoStream = require('./videoStream');
 
 
+function runService(workerData) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker('./object-tracking-worker.js', { workerData });
+    worker.on('message', resolve);
+    worker.on('error', reject);
+    worker.on('exit', (code) => {
+      if (code !== 0)
+        reject(new Error(`Worker stopped with exit code ${code}`));
+    })
+  })
+}
 
+async function run() {
+  let img = videoStream.getLastFrame();
+  console.log(img);
+  const result = await runService(img);
+  console.log(result);
+}
+
+//run().catch(err => console.error(err))
 
 videoStream.acceptConnections(app, {
     width: 480,
@@ -66,9 +86,9 @@ let socket = io.sockets.on('connection', function (s) {
 
 
     s.on('track', (args) => {
-      let img = videoStream.getLastFrame();
-      console.log(img);
-      trackAndRenderWorker(img);
+      //let img = videoStream.getLastFrame();
+      run().catch(err => console.error(err))
+      //trackObjectWorker(img);
     });
 
 });
@@ -105,7 +125,7 @@ function killProcesses() {
   }
 
 
-function trackAndRenderWorker(data) {
+function trackObjectWorker(data) {
   // pool.exec('fibonacci', [data])
   //   .then(function (result) {
   //     console.log('Result: ' + result); // outputs 55
@@ -116,9 +136,10 @@ function trackAndRenderWorker(data) {
   //   .then(function () {
   //     pool.terminate(); // terminate all workers when done
   //   });
-  pool.exec('fibonacci', [data])
+  pool.exec('trackObject', [data])
     .then(function (result) {
-      console.log(result.next); // outputs 55
+      console.log('Result: '); // outputs 55
+      console.log(result); // outputs 55
     })
     .catch(function (err) {
       console.error(err);

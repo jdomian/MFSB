@@ -1,27 +1,33 @@
 const fs = require('fs');
 const workerpool = require('workerpool');
 const objectTracker = require('@cloud-annotations/object-tracking');
-const { Image, createCanvas } = require('canvas');
+const { Image, createCanvas } = require('canvas')
 const trackingCanvas = createCanvas(480, 480);
+const ctx = trackingCanvas.getContext('2d');
+
 
 
 
 // a deliberately inefficient implementation of the fibonacci sequence
-function fibonacci(frame) {
+function trackObject(frame) {
 
     const xmin = 200;
     const ymin = 200;
     const width = 200;
     const height = 200;
+
+    fs.writeFileSync('worker-image-test.jpg', frame);
+    // let image = fs.readFileSync('worker-image-test.jpg');
+    let img = new Image();
+    img.src = 'worker-image-test.jpg';
+
+    ctx.drawImage(img, 0, 0, 480, 480);
+
+    //await ctx.drawImage(frame, 0, 0, 480, 480);
+
     
 
-    convertImageToCanvas(frame);
 
-    fs.writeFileSync('test.jpg', frame);
-
-    //
-
-    console.log(frame);
 
     // const imgStream = fs.readFile(frame);
     // const buffer = fs.writeFileSync('stream.jpg', frame);
@@ -37,16 +43,30 @@ function fibonacci(frame) {
     ]);
 
     console.log(tracker);
+    let content = tracker.next;
+    try {
+      
+
+      setInterval(async () => {
+        let box = await tracker.next(trackingCanvas);
+        fs.writeFileSync('test.txt', box);
+        //socket.emit('objectTracker', box);
+    },0);
+      // file written successfully
+    } catch (err) {
+      console.error(err);
+    }
 }
 
 // create a worker and register public functions
 workerpool.worker({
-  fibonacci: fibonacci
+  trackObject: trackObject
 });
 
 async function convertImageToCanvas(image) {
-    const ctx = trackingCanvas.getContext('2d');
-    const img = new Image();
+  console.log(image);
+    const ctx = await trackingCanvas.getContext('2d');
+    const img = await new Image();
     img.src = image;
     await ctx.drawImage(img, 0, 0, 480, 480);
 }

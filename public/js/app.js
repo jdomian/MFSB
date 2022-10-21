@@ -352,18 +352,18 @@ let mfsb = {
         const height = 200;
 
         const frame = document.getElementById('stream');
-        //mfsb.convertImageToCanvas();
+        // mfsb.convertImageToCanvas();
 
         
 
-        const tracker = objectTracker.init(frame, [
-            xmin,
-            ymin,
-            width,
-            height
-        ]);
+        // const tracker = objectTracker.init(frame, [
+        //     xmin,
+        //     ymin,
+        //     width,
+        //     height
+        // ]);
         
-        socket.local.emit('track', tracker);
+        socket.local.emit('track', frame);
 
         // setInterval(async () => {
 
