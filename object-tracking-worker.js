@@ -3,7 +3,6 @@ const fs = require('fs');
 // const { Image, createCanvas } = require('canvas')
 // const trackingCanvas = createCanvas(480, 480);
 // const ctx = trackingCanvas.getContext('2d');
-const cocoSsd = require('@tensorflow-models/coco-ssd');
 const tf = require('@tensorflow/tfjs-node');
 const mobilenet = require('@tensorflow-models/mobilenet');
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');

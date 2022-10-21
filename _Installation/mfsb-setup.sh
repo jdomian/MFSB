@@ -48,10 +48,11 @@ git clone https://github.com/jdomian/MFSB.git
 ln -s ~/MFSB ~/mfsb
 
 # Change directory to MFSB/www root for MFSB v2 (Rivalburn version)
-cd mfsb
+cd MFSB
 
 # Initialize NPM with packages using the repositories package.json.
-npm install
+sudo npm install
+sudo npm install raspberry-pi-camera-native
 
 
 # (Optional)
