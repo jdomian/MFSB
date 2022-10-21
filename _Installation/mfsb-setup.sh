@@ -79,4 +79,5 @@ sudo apt-get install git -y &
 sudo apt-get install python3-pip -y &
 sudo apt-get install i2c-tools -y &
 sudo apt-get update -y & 
-sudo npm install --global gulp-cli
+sudo npm install --global gulp-cli &
+
