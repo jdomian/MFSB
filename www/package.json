@@ -1,0 +1,24 @@
+{
+  "name": "mfsb-v2",
+  "version": "2.0.0",
+  "description": "MFSB v2 found on Rivalburn",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdomian/MFSB.git"
+  },
+  "author": "Jonathan Domian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdomian/MFSB/issues"
+  },
+  "homepage": "https://github.com/jdomian/MFSB#readme",
+  "dependencies": {
+    "pigpio": "^3.3.1",
+    "rpio": "^2.4.2",
+    "socket.io": "^4.5.3"
+  }
+}
