@@ -29,6 +29,7 @@ sudo apt-get install git -y
 
 # Install Python3-pip... this one takes a while
 sudo apt-get install python3-pip -y
+sudo apt-get install libfontconfig -y
 
 # Install i2c-tools
 sudo apt-get install i2c-tools -y
@@ -77,6 +78,7 @@ sudo apt-get install gcc g++ make -y
 sudo apt install build-essential -y
 sudo apt-get install git -y
 sudo apt-get install python3-pip -y
+sudo apt-get install libfontconfig -y
 sudo apt-get install i2c-tools -y
 sudo apt-get update -y
 sudo npm install --global gulp-cli
