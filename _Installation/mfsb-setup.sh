@@ -53,7 +53,7 @@ cd MFSB
 # Initialize NPM with packages using the repositories package.json.
 sudo npm install
 sudo npm install raspberry-pi-camera-native
-npm install skia-canvas
+sudo npm install skia-canvas
 
 
 # (Optional)
