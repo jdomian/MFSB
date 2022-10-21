@@ -27,14 +27,17 @@ sudo apt-get install gcc g++ make -y
 # Install GIT
 sudo apt-get install git -y
 
-# Install Python3-pip
+# Install Python3-pip... this one takes a while
 sudo apt-get install python3-pip -y
 
 # Install i2c-tools
 sudo apt-get install i2c-tools -y
 
 # Update again and install NodeJS dependencies for npm canvas
-sudo apt-get update
+sudo apt-get update -y
+
+# Install Gulp globally with sudo for development
+sudo npm install --global gulp-cli
 
 # Clone the MFSB repository
 git clone https://github.com/jdomian/MFSB.git
@@ -43,10 +46,7 @@ git clone https://github.com/jdomian/MFSB.git
 ln -s ~/MFSB ~/mfsb
 
 # Change directory to MFSB
-cd MFSB
-
-# Install Gulp globally with sudo for development
-sudo npm install --global gulp-cli
+cd mfsb
 
 # Initialize NPM with packages using the repositories package.json.
 npm init -y
