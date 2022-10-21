@@ -9,7 +9,7 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 # Add the repository for the latest version of NodeJS
-curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
 # Install Node Version Manager (Just in case)
 # Use: 
@@ -39,6 +39,8 @@ sudo apt-get update -y
 # Install Gulp globally with sudo for development
 sudo npm install --global gulp-cli
 
+# Clone the raspberrypi_node_camera_web_streamer
+
 # Clone the MFSB repository
 git clone https://github.com/jdomian/MFSB.git
 
@@ -49,14 +51,16 @@ ln -s ~/MFSB ~/mfsb
 cd mfsb
 
 # Initialize NPM with packages using the repositories package.json.
-npm init -y
 npm install
 
-# Install all node dependencies with NPM incase they were not already installed with npm init
-npm install n express workerpool socket.io raspberry-pi-camera-native gulp gulp-cli
-
-# Install gulp dependencies
-npm install gulp-csso gulp-sass sass gulp-concat gulp-minify gulp-clean-css gulp-sourcemaps browser-sync del node-fetch
 
 # (Optional)
-sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+# Install all node dependencies with NPM incase they were not already installed with npm init
+#npm install n express workerpool socket.io raspberry-pi-camera-native gulp gulp-cli
+
+# Install gulp dependencies
+#npm install gulp-csso gulp-sass sass gulp-concat gulp-minify gulp-clean-css gulp-sourcemaps browser-sync del node-fetch
+
+# Install other dependencies for canvas
+#sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
