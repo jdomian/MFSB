@@ -20,15 +20,14 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 # Install NodeJS now that it is added to the repository list.
 sudo apt install nodejs -y
 
-# Install additional NodeJS & NPM build tools.
+# Install additional like python3 for NodeJS & NPM build tools.
 sudo apt install build-essential -y
-sudo apt-get install gcc g++ make
+sudo apt-get install gcc g++ make -y
 
 # Install GIT
 sudo apt-get install git -y
 
-# Install Python3
-sudo apt install python3 -y
+# Install Python3-pip
 sudo apt-get install python3-pip -y
 
 # Install i2c-tools
@@ -36,7 +35,6 @@ sudo apt-get install i2c-tools -y
 
 # Update again and install NodeJS dependencies for npm canvas
 sudo apt-get update
-sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
 # Clone the MFSB repository
 git clone https://github.com/jdomian/MFSB.git
@@ -59,3 +57,6 @@ npm install n express workerpool socket.io raspberry-pi-camera-native gulp gulp-
 
 # Install gulp dependencies
 npm install gulp-csso gulp-sass sass gulp-concat gulp-minify gulp-clean-css gulp-sourcemaps browser-sync del node-fetch
+
+# (Optional)
+sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
