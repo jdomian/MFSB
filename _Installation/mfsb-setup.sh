@@ -69,15 +69,15 @@ npm install skia-canvas
 
 
 # ALL INSTALL SCRIPTS
-sudo apt-get update -y &
-sudo apt-get upgrade -y &
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - &
-sudo apt-get install -y nodejs & 
-sudo apt-get install gcc g++ make -y &
-sudo apt install build-essential -y &
-sudo apt-get install git -y &
-sudo apt-get install python3-pip -y &
-sudo apt-get install i2c-tools -y &
-sudo apt-get update -y & 
-sudo npm install --global gulp-cli &
+sudo apt-get update -y
+sudo apt-get upgrade -y
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo apt-get install gcc g++ make -y
+sudo apt install build-essential -y
+sudo apt-get install git -y
+sudo apt-get install python3-pip -y
+sudo apt-get install i2c-tools -y
+sudo apt-get update -y
+sudo npm install --global gulp-cli
 
