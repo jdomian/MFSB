@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
-const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+const { Worker, isMainThread } = require('worker_threads');
 
 const { kill } = require('process');
 const spawn = require('child_process').spawn;
@@ -15,6 +15,10 @@ const serverIP = interfaces.wlan0[0].address;
 const port = 8000;
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}! In your web browser, navigate to http://${serverIP}:${port}`));
 let children = [];
+let img;
+let stopper = false;
+
+
 
 
 const io = require('socket.io')(server, {
@@ -28,28 +32,67 @@ const io = require('socket.io')(server, {
 const videoStream = require('./videoStream');
 
 
-function runService(workerData) {
+
+const runService = (workerData) => {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('./object-tracking-worker.js', { workerData });
-    worker.on('message', resolve);
-    worker.on('error', reject);
-    worker.on('exit', (code) => {
-      if (code !== 0)
-        reject(new Error(`Worker stopped with exit code ${code}`));
-    })
+    const worker = new Worker('./object-tracking-worker.js', {workerData});
+
+      console.log('Sending shit to track...')
+      worker.on('message', (resolve) => {
+        console.log('Success: ');
+        console.log(resolve);
+      });
+      worker.on('error', reject);
+      worker.on('exit', (code) => {
+          if (code !== 0)
+              reject(new Error(`stopped with  ${code} exit code`));
+      })
   })
 }
 
-async function run() {
-  let img = videoStream.getLastFrame();
-  console.log(img);
-  const result = await runService(img);
-  console.log(result);
-}
+// async() => {
 
+//   let img = await videoStream.getLastFrame();
+//   //await console.log(img);
+//   const binary = await new Uint8Array(img);
+//   await fs.writeFileSync('stream.jpg', binary);
+
+// }
+
+
+
+async function run() {
+
+  let img = await videoStream.getLastFrame();
+  
+  console.log(img);
+
+  const result = await runService(img);
+
+
+  // await setInterval(async() => {
+
+    
+    
+
+  // }, 500);
+
+
+      
+
+
+  //run();
+    
+  // console.log(img);
+  //await fs.writeFileSync('stream.jpg', img);
+      
+    
+
+  
+};
 //run().catch(err => console.error(err))
 
-videoStream.acceptConnections(app, {
+const vStream = videoStream.acceptConnections(app, {
     width: 480,
     height: 480,
     fps: 30,
@@ -87,7 +130,10 @@ let socket = io.sockets.on('connection', function (s) {
 
     s.on('track', (args) => {
       //let img = videoStream.getLastFrame();
-      run().catch(err => console.error(err))
+
+        run().catch(err => console.log('Error:\n' + JSON.stringify(err)));
+
+      
       //trackObjectWorker(img);
     });
 
@@ -150,4 +196,11 @@ function trackObjectWorker(data) {
 
 }
 
+async function getLastFrame() {
+  let img = await videoStream.getLastFrame();
+  return img;
+}
+
+
 app.use(express.static(__dirname+'/public'));
+
