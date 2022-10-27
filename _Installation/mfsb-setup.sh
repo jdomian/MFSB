@@ -1,6 +1,16 @@
 #!/bin/bash
 
-# 1. Open raspi-config, then enable the camera, I2C,  auto login, and disable waiting for network at boot
+# Check if the camera is enabled. 1 = disabled, 0 = enabled.
+# sudo raspi-config nonint get_camera
+
+# Enable the camera
+sudo raspi-config nonint do_camera 0
+
+# Check if i2c is enabled. 1 = disabled, 0 = enabled.
+# sudo raspi-config nonint get_i2c
+
+# Enable i2c
+sudo raspi-config nonint do_i2c 0
 
 # Update Raspberry Pi OS
 sudo apt-get update -y
@@ -73,6 +83,7 @@ sudo npm install skia-canvas
 sudo apt-get update -y
 sudo apt-get upgrade -y
 curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash 
 sudo apt-get install -y nodejs
 sudo apt-get install gcc g++ make -y
 sudo apt install build-essential -y
