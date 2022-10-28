@@ -8,3 +8,6 @@ cd MFSB
 
 # Checkout hyperpixel2r Branch
 git checkout hyperpixel2r
+
+# Install NPM dependencies
+npm install
