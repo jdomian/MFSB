@@ -89,9 +89,9 @@ git pull
 
 
 # Install NPM dependencies
-npm install
-npm install raspberry-pi-camera-native
-npm install skia-canvas
+sudo npm install
+sudo npm install raspberry-pi-camera-native
+sudo npm install skia-canvas
 
 
 # hyperpixel2r LCD screen driver install
