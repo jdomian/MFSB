@@ -64,14 +64,12 @@ cd MFSB
 git checkout hyperpixel2r
 git pull
 
-# Install NPM dependencies
-npm install
-npm install raspberry-pi-camera-native
-npm install skia-canvas
-
 # Chromium Kiosk-Mode install
 sudo apt-get install --no-install-recommends xserver-xorg x11-xserver-utils xinit openbox
 sudo apt-get install --no-install-recommends chromium-browser
+
+# TODO Add an openbox file to move with mv
+# TODO Add rc.local to write to
 
 OPENBOX="/etc/xdg/openbox/autostart"
 
@@ -85,8 +83,14 @@ OPENBOX_LINES=(
   "# Start Chromium in kiosk mode"
   "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/' ~/.config/chromium/'Local State'"
   "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/; s/`exit_type`:`[^`]\+`/`exit_type`:`Normal`/' ~/.config/chromium/Default/Preferences"
-  "chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required --window-size=480,480 'http://10.0.0.132:3000/'"
+  "chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required --window-size=480,480 app=http://10.0.0.132:3000/"
 )
+
+# Install NPM dependencies
+npm install
+npm install raspberry-pi-camera-native
+npm install skia-canvas
+
 
 # hyperpixel2r LCD screen driver install
 cd
