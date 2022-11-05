@@ -4,13 +4,13 @@
 # sudo raspi-config nonint get_camera
 
 # Enable the camera
-sudo raspi-config nonint do_camera 0
+sudo raspi-config nonint do_camera 0 -y
 
 # Check if i2c is enabled. 1 = disabled, 0 = enabled.
 # sudo raspi-config nonint get_i2c
 
 # Enable i2c
-sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_i2c 0 -y
 
 # Update Raspberry Pi OS
 sudo apt-get update -y
@@ -28,7 +28,7 @@ curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash 
 
 # Install NodeJS now that it is added to the repository list.
-sudo apt-get install -y nodejs
+sudo apt-get install nodejs -y
 
 # Install additional like python3 for NodeJS & NPM build tools.
 sudo apt-get install gcc g++ make -y
@@ -77,20 +77,4 @@ sudo npm install skia-canvas
 
 # Install other dependencies for canvas
 #sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
-
-
-# ALL INSTALL SCRIPTS
-sudo apt-get update -y
-sudo apt-get upgrade -y
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash 
-sudo apt-get install -y nodejs
-sudo apt-get install gcc g++ make -y
-sudo apt install build-essential -y
-sudo apt-get install git -y
-sudo apt-get install python3-pip -y
-sudo apt-get install libfontconfig -y
-sudo apt-get install i2c-tools -y
-sudo apt-get update -y
-sudo npm install --global gulp-cli
 
