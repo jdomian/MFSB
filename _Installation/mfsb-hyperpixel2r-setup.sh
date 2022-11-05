@@ -66,6 +66,8 @@ git checkout hyperpixel2r
 
 # Install NPM dependencies
 npm install
+npm install raspberry-pi-camera-native
+npm install skia-canvas
 
 cd
 
