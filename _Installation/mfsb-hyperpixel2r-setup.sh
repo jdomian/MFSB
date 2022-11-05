@@ -57,19 +57,38 @@ git clone https://github.com/jdomian/MFSB.git
 
 # Create a symlink from lowercase to uppercase MFSB
 ln -s ~/MFSB ~/mfsb
-
 # Change directory to MFSB/www root for MFSB v2 (Rivalburn version)
-cd MFSB
+cd MFSB 
 
 # Checkout hyperpixel2r Branch
 git checkout hyperpixel2r
+git pull
 
 # Install NPM dependencies
 npm install
 npm install raspberry-pi-camera-native
 npm install skia-canvas
 
-#hyperpixel2r driver install
+# Chromium Kiosk-Mode install
+sudo apt-get install --no-install-recommends xserver-xorg x11-xserver-utils xinit openbox
+sudo apt-get install --no-install-recommends chromium-browser
+
+OPENBOX="/etc/xdg/openbox/autostart"
+
+OPENBOX_LINES=(
+  "# Disable any form of screen saver / screen blanking / power management"
+  "xset s off"
+  "xset s noblank"
+  "xset -dpms"
+  "# Allow quitting the X server with CTRL-ATL-Backspace"
+  "setxkbmap -option terminate:ctrl_alt_bksp"
+  "# Start Chromium in kiosk mode"
+  "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/' ~/.config/chromium/'Local State'"
+  "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/; s/`exit_type`:`[^`]\+`/`exit_type`:`Normal`/' ~/.config/chromium/Default/Preferences"
+  "chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required --window-size=480,480 'http://10.0.0.132:3000/'"
+)
+
+# hyperpixel2r LCD screen driver install
 cd
 
 git clone https://github.com/pimoroni/hyperpixel2r
