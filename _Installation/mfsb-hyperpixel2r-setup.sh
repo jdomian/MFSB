@@ -44,6 +44,28 @@ sudo apt-get install libfontconfig -y
 # Install i2c-tools
 sudo apt-get install i2c-tools -y
 
+# Chromium Kiosk-Mode install
+sudo apt-get install --no-install-recommends xserver-xorg x11-xserver-utils xinit openbox -y
+sudo apt-get install --no-install-recommends chromium-browser -y
+
+# TODO Add an openbox file to move with mv
+# TODO Add rc.local to write to
+
+OPENBOX="/etc/xdg/openbox/autostart"
+
+OPENBOX_LINES=(
+  "# Disable any form of screen saver / screen blanking / power management"
+  "xset s off"
+  "xset s noblank"
+  "xset -dpms"
+  "# Allow quitting the X server with CTRL-ATL-Backspace"
+  "setxkbmap -option terminate:ctrl_alt_bksp"
+  "# Start Chromium in kiosk mode"
+  "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/' ~/.config/chromium/'Local State'"
+  "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/; s/`exit_type`:`[^`]\+`/`exit_type`:`Normal`/' ~/.config/chromium/Default/Preferences"
+  "chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required --window-size=480,480 app=http://10.0.0.132:3000/"
+)
+
 # Update again and install NodeJS dependencies for npm canvas
 sudo apt-get update -y
 
@@ -64,27 +86,7 @@ cd MFSB
 git checkout hyperpixel2r
 git pull
 
-# Chromium Kiosk-Mode install
-sudo apt-get install --no-install-recommends xserver-xorg x11-xserver-utils xinit openbox
-sudo apt-get install --no-install-recommends chromium-browser
 
-# TODO Add an openbox file to move with mv
-# TODO Add rc.local to write to
-
-OPENBOX="/etc/xdg/openbox/autostart"
-
-OPENBOX_LINES=(
-  "# Disable any form of screen saver / screen blanking / power management"
-  "xset s off"
-  "xset s noblank"
-  "xset -dpms"
-  "# Allow quitting the X server with CTRL-ATL-Backspace"
-  "setxkbmap -option terminate:ctrl_alt_bksp"
-  "# Start Chromium in kiosk mode"
-  "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/' ~/.config/chromium/'Local State'"
-  "sed -i 's/`exited_cleanly`:false/`exited_cleanly`:true/; s/`exit_type`:`[^`]\+`/`exit_type`:`Normal`/' ~/.config/chromium/Default/Preferences"
-  "chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required --window-size=480,480 app=http://10.0.0.132:3000/"
-)
 
 # Install NPM dependencies
 npm install
