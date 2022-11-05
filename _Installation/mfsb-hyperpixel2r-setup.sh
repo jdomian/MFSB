@@ -69,6 +69,7 @@ npm install
 npm install raspberry-pi-camera-native
 npm install skia-canvas
 
+#hyperpixel2r driver install
 cd
 
 git clone https://github.com/pimoroni/hyperpixel2r
