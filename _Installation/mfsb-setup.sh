@@ -5,11 +5,14 @@ red_prefix="\033[31m"
 green_prefix="\033[32m"
 yellow_prefix="\033[33m"
 blue_prefix="\033[34m"
+purple_prefix="\033[35m"
 
 red_bold_prefix="\033[1;31m"
 green_bold_prefix="\033[1;32m"
 yellow_bold_prefix="\033[1;33m"
 blue_bold_prefix="\033[1;34m"
+purple_bold_prefix="\033[1;35m"
+
 all_suffix="\033[00m"
 
 # Check if the camera is enabled. 1 = disabled, 0 = enabled.
@@ -102,22 +105,23 @@ echo -e "$yellow_prefix"Installing"$all_suffix" "$blue_prefix"Chromium Browser..
 sudo apt-get install --no-install-recommends chromium-browser -y
 
 # Append OpenBox settings to /etc/xdg/openbox/autostart file to launch Chromium Browser on boot at full screen. Done with sudo -i as sudo.
+echo -e "$yellow_bold_prefix"Adding settings for "$blue_prefix"Chromium Browser"$all_suffix" "$yellow_bold_prefix"to boot in Kiosk mode on loading of XServer window manager..."$all_suffix"
 sudo -i
-autostart='/etc/xdg/openbox/autostart'
-echo "" >> $autostart
-echo "" >> $autostart
-echo "# Disable any form of screen saver / screen blanking / power management" >> $autostart
-echo "xset s off" >> $autostart
-echo "xset s noblank" >> $autostart
-echo "xset -dpms" >> $autostart
-echo "" >> $autostart
-echo "# Allow quitting the X server with CTRL-ATL-Backspace" >> $autostart
-echo "setxkbmap -option terminate:ctrl_alt_bksp" >> $autostart
-echo "" >> $autostart
-echo "# Start Chromium in kiosk mode" >> $autostart
-echo "sed -i 's/\"exited_cleanly\":false/\"exited_cleanly\":true/' ~/.config/chromium/'Local State'" >> $autostart
-echo "sed -i 's/\"exited_cleanly\":false/\"exited_cleanly\":true/; s/\"exit_type\":\"[^\"]\+\"/\"exit_type\":\"Normal\"/' ~/.config/chromium/Default/Preferences" >> $autostart
-echo "chromium-browser --disable-infobars --kiosk 'http://localhost:8000'" >> $autostart
+    autostart='/etc/xdg/openbox/autostart'
+    echo "" >> $autostart
+    echo "" >> $autostart
+    echo "# Disable any form of screen saver / screen blanking / power management" >> $autostart
+    echo "xset s off" >> $autostart
+    echo "xset s noblank" >> $autostart
+    echo "xset -dpms" >> $autostart
+    echo "" >> $autostart
+    echo "# Allow quitting the X server with CTRL-ATL-Backspace" >> $autostart
+    echo "setxkbmap -option terminate:ctrl_alt_bksp" >> $autostart
+    echo "" >> $autostart
+    echo "# Start Chromium in kiosk mode" >> $autostart
+    echo "sed -i 's/\"exited_cleanly\":false/\"exited_cleanly\":true/' ~/.config/chromium/'Local State'" >> $autostart
+    echo "sed -i 's/\"exited_cleanly\":false/\"exited_cleanly\":true/; s/\"exit_type\":\"[^\"]\+\"/\"exit_type\":\"Normal\"/' ~/.config/chromium/Default/Preferences" >> $autostart
+    echo "chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required app=http://localhost:8080" >> $autostart
 exit
 
 # Add display launch command to .bash_profile to open Chromium on boot.
@@ -131,6 +135,107 @@ else
     bashProfile='.bash_profile'
     echo '[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor' >> $bashProfile
 fi
+
+##### --- For Hyperpixel2r Display--- #####
+cd
+echo -e "$purple_prefix"Installing Hyperpixel 2.1 Round drivers from Github..."$all_suffix"
+git clone https://github.com/pimoroni/hyperpixel2r
+cd hyperpixel2r
+sudo ./install.sh -y
+
+cd
+echo -e "$purple_prefix"...adding touch driver..."$all_suffix"
+git clone https://github.com/pimoroni/hyperpixel2r-python
+cd hyperpixel2r-python
+sudo ./install.sh -y
+
+##### --- Create basic NodeJS web server --- #####
+echo -e "$green_bold_prefix"Creating basic NodeJS express web server."$all_suffix"
+cd
+
+# Check if NodeJS Web Server folder exists
+nodeServerFolder='node-server'
+if [ -d "$nodeServerFolder" ]; then
+    echo "NodeJS web server folder exists... skipping"
+else
+    sudo mkdir $nodeServerFolder
+fi
+cd $nodeServerFolder
+
+# Create NodeJS Express web server
+serverJS='server.js'
+if [ -f "$serverJS" ]; then
+    echo "NodeJS server file exists... skipping"
+else
+    echo "NodeJS server DOES NOT file exists... creating basic NodeJS Express web server..."
+    sudo touch server.js
+    serverJS='server.js'
+    echo "const express = require('express');" | sudo tee -a $serverJS
+    echo "const app = express();" | sudo tee -a $serverJS
+    echo "const os = require('os');" | sudo tee -a $serverJS
+    echo "const interfaces = os.networkInterfaces();" | sudo tee -a $serverJS
+    echo "const serverIP = interfaces;" | sudo tee -a $serverJS
+    echo "const port = 8000;" | sudo tee -a $serverJS
+    echo "" | sudo tee -a $serverJS
+    echo "const server = {" | sudo tee -a $serverJS
+    echo "    init() {" | sudo tee -a $serverJS
+    echo "        app.listen(port, () => console.log(\`Listening on port \${port}\!\`));" | sudo tee -a $serverJS
+    echo "        console.log(interfaces);" | sudo tee -a $serverJS
+    echo "    }" | sudo tee -a $serverJS
+    echo "}" | sudo tee -a $serverJS
+    echo "" | sudo tee -a $serverJS
+    echo "server.init();" | sudo tee -a $serverJS
+    echo "app.use(express.static(__dirname + '/public'));" | sudo tee -a $serverJS
+fi
+
+# Create /public directory and /public/css amd /public/js directories for web files.
+cd $nodeServerFolder
+webRootDir='public'
+if [ -d "$webRootDir" ]; then
+    echo "NodeJS web root directory 'public' exists... skipping"
+    cd $webRootDir
+else
+    echo "NodeJS web root directory 'public' DOES NOT exists... creating..."
+    sudo mkdir public
+    webRootDir='public'
+    cd $webRootDir
+    sudo mkdir css
+    sudo mkdir js
+fi
+
+# Create initial HTML file in the /public directory.
+indexHTML='index.html'
+if [ -d "$indexHTML" ]; then
+    echo "index.html exists... skipping"
+    cd
+    cd
+    cd
+    echo "NodeJS web server already setup. Edit index.html to test."
+else
+    echo "index.html DOES NOT exists... creating..."
+    echo index.html
+    indexHTML = 'index.html'
+    echo '<!DOCTYPE html>' | sudo tee -a $indexHTML
+    echo '<html lang="en">' | sudo tee -a $indexHTML
+    echo '  <head>' | sudo tee -a $indexHTML
+    echo '    <meta charset="UTF-8">' | sudo tee -a $indexHTML
+    echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' | sudo tee -a $indexHTML
+    echo '    <meta http-equiv="X-UA-Compatible" content="ie=edge">' | sudo tee -a $indexHTML
+    echo '    <title>NodeJS Server - HTML5 Boilerplate</title>' | sudo tee -a $indexHTML
+    echo '    <link rel="stylesheet" href="css/style.css">' | sudo tee -a $indexHTML
+    echo '  </head>' | sudo tee -a $indexHTML
+    echo '  <body>' | sudo tee -a $indexHTML
+    echo '    <h1>NodeJS Express Server</h1>' | sudo tee -a $indexHTML
+    echo '    <script src="js/index.js"></script>' | sudo tee -a $indexHTML
+    echo '  </body>' | sudo tee -a $indexHTML
+    echo '</html>' | sudo tee -a $indexHTML
+fi
+
+cd
+cd $nodeServerFolder
+
+# Install NodeJS NPM dependencies
+sudo npm install -g express
 
 # Clone the MFSB repository
 git clone https://github.com/jdomian/MFSB.git
