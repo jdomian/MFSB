@@ -124,18 +124,6 @@ sudo -i
     echo "chromium-browser --disable-infobars --disable-web-security --allow-file-access-from-files --kiosk --autoplay-policy=no-user-gesture-required app=http://localhost:8080" >> $autostart
 exit
 
-# Add display launch command to .bash_profile to open Chromium on boot.
-bashProfile='.bash_profile'
-if [ -f "$bashProfile" ]; then
-    echo "$bashProfile exists."
-    echo '[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor' >> $bashProfile
-else 
-    echo "$bashProfile does not exist."
-    echo > .bash_profile
-    bashProfile='.bash_profile'
-    echo '[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor' >> $bashProfile
-fi
-
 ##### --- For Hyperpixel2r Display--- #####
 cd
 echo -e "$purple_prefix"Installing Hyperpixel 2.1 Round drivers from Github..."$all_suffix"
@@ -148,6 +136,8 @@ echo -e "$purple_prefix"...adding touch driver..."$all_suffix"
 git clone https://github.com/pimoroni/hyperpixel2r-python
 cd hyperpixel2r-python
 sudo ./install.sh -y
+cd
+cd
 
 ##### --- Create basic NodeJS web server --- #####
 echo -e "$green_bold_prefix"Creating basic NodeJS express web server."$all_suffix"
@@ -170,6 +160,8 @@ else
     echo "NodeJS server DOES NOT file exists... creating basic NodeJS Express web server..."
     sudo touch server.js
     serverJS='server.js'
+    echo "// This is a basic NodeJS Web Server. " | sudo tee -a $serverJS
+    echo "" | sudo tee -a $serverJS
     echo "const express = require('express');" | sudo tee -a $serverJS
     echo "const app = express();" | sudo tee -a $serverJS
     echo "const os = require('os');" | sudo tee -a $serverJS
@@ -236,6 +228,46 @@ cd $nodeServerFolder
 
 # Install NodeJS NPM dependencies
 sudo npm install -g express
+
+# Add display launch command to .bash_profile to open Chromium on boot and start NodeJS Server.
+bashProfile='.bash_profile'
+if [ -f "$bashProfile" ]; then
+    echo "$bashProfile exists."
+    echo '[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor' >> $bashProfile
+else 
+    echo "$bashProfile does not exist."
+    echo > .bash_profile
+    bashProfile='.bash_profile'
+    echo "# Start XServer display on boot and launch /etc/xdg/openbox/autostart script." >> $bashProfile
+    echo '[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor' >> $bashProfile
+    echo "# Start NodeJS Web Server on boot" >> $bashProfile
+    echo 'node /home/pi/node-server/server.js < /dev/null &' >> $bashProfile
+fi
+
+PS3='What are you trying to setup here?: '
+setup=("MFSB" "MFSB-hyperpixel2r" "Basic NodeJS Express Web Server" "Quit")
+select what in "${setup[@]}"; do
+    case $what in
+        "MFSB")
+            echo "Americans eat roughly 100 acres of $hat each day!"
+	        # optionally call a function or run some code here
+            ;;
+        "MFSB-hyperpixel2r")
+            echo "$what is a Vietnamese soup that is commonly mispronounced like go, instead of duh."
+	        # optionally call a function or run some code here
+            ;;
+        "Basic NodeJS Express Web Server")
+            echo "According to NationalTacoDay.com, Americans are eating 4.5 billion $what each year."
+	        # optionally call a function or run some code here
+	        break
+            ;;
+	    "Quit")
+	        echo "User requested exit"
+	        exit
+	        ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
 
 # Clone the MFSB repository
 git clone https://github.com/jdomian/MFSB.git
